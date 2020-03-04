@@ -8,8 +8,9 @@ sample_response = {
 import ta
 import pandas as pd
 from strategy import Strategy
+from backtest import Backtester
 
 
 if __name__ == '__main__':
     test_strategy = Strategy(data=sample_response.get('result'))
-
+    backtester = Backtester(strategy=test_strategy)
