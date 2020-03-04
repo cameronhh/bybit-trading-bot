@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import ta
 
 class Strategy:
@@ -35,11 +36,18 @@ class Strategy:
         self.df['adi'] = indicator_adi.acc_dist_index()
 
         # add more indicators here
-        print(self.df)
+
 
     def add_logic(self):
         """ Define the logic that decides when trades should be entered and exited.
             Adds columns to self.df: 'long', 'short', 'exitlong', 'exitshort'
         """
         print('adding logic')
+        rng = np.random.RandomState(3)
+        self.df['long'] = pd.Series(rng.randint(0, 2, 200))
+        self.df['short'] = pd.Series(rng.randint(0, 1, 200))
+        self.df['exitlong'] = pd.Series(rng.randint(0, 2, 200))
+        self.df['exitshort'] = pd.Series(rng.randint(0, 1, 200))
+        
+
 
