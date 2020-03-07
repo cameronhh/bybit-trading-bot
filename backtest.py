@@ -47,7 +47,6 @@ class Backtester:
 
         self.state = NO_POSITION      
         for index, row in self.strategy.df.iterrows():
-            print(row)
             order_size = self._get_order_size(self.stake_percent * self.total_equity, row['close'])
             if row['long'] == 1:
                 self._long(row['close'], order_size)
