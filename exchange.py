@@ -39,7 +39,7 @@ class BybitExchange:
         return self.client.Positions.Positions_userLeverage().result()[0].get('result').get(symbol).get('leverage')
 
     def set_leverage(self, symbol, leverage):
-        if (self.get_leverage(symbol) != leverage):
+        if (self.get_leverage(symbol) != int(leverage)):
             kwargs = { "symbol": symbol, "leverage": leverage }
             return self.client.Positions.Positions_saveLeverage(**kwargs).result()
         return f'Leverage already {leverage}'
