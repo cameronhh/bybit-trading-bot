@@ -20,46 +20,109 @@ Project structure:
 """
 
 
-import sched, time, bybit
+import sched, time
+from exchange import BybitExchange
+from actions import Action
+from strategy import Strategy
 
-api_key = ''
-private_key = ''
-commission = 0.075
+commission = 0.00075
+
+
+class TradingBot:
+    def __init__(self):
+        self.api_key = ''
+        self.private_key = ''
+
+        self.risk = 0.2     # 20% of available balance staked per trade
+        self.leverage = 5
+
+        # init
+        self.exchange = BybitExchange(test=True, api_key=self.api_key, private_key=self.private_key)
+        self.strategy = Strategy()
+
+        # check leverage
+        self.exchange.set_leverage("BTCUSD",  5)
+
+        self.update_info()
+
+
+    def testing(self):
+        print(f'current available balance is: {self.exchange.get_available_balance("BTC")}')
+        print(f'current mark price is: {self.exchange.get_market_price("BTCUSD")}')
+
+    def update_info(self):
+        # check position
+        self.position = self.exchange.get_position("BTCUSD")
+        self.has_position = not (self.position.get('side') == 'None')
+        self.avail_bal = self.exchange.get_available_balance("BTC")
+        
+        # get last seen price
+        self.last_mark_price = self.exchange.get_market_price("BTCUSD")
+
+    def new_order_qty(self, coin):
+        return self.avail_bal * self.risk * self.leverage * self.last_mark_price
+
+    def execute_action(action):
+        if action == Action.CLOSE_LONG:
+            print('doing CLOSE_LONG')
+            if self.position.get('side') == 'Buy': # in a long posn
+                open_qty = self.position.get('size')
+                self.exchange.place_order('Sell', 'BTCUSD', size)
+            # else: # not in a long posn
+
+        elif action == Action.CLOSE_SHORT:
+            print('doing CLOSE_SHORT')
+            if self.position.get('side') == 'Sell': # in a short posn
+                open_qty = self.position.get('size')
+                self.exchange.place_order('Buy', 'BTCUSD', size)
+            # else: # not in a short posn
+
+        elif action == Action.OPEN_LONG:
+            print('doing OPEN_LONG')
+            qty = self.new_order_qty("BTC")
+            self.exchange.place_order("Buy", "BTCUSD", qty)
+
+        elif action == Action.OPEN_SHORT:
+            print('doing OPEN_SHORT')
+            qty = self.new_order_qty("BTC")
+            self.exchange.place_order("Sell", "BTCUSD", qty)
+
+        # update info as action is completed
+        self.update_info()
+
+    def worker(self)
+        """ Run each time new kline data is ready.
+        """
+        # get data
+        klines = self.exchange.get_klines("BTCUSD", "5")
+        # load data
+        self.strategy.load_klines(data=klines.get('result'))
+        # get action
+        actions = self.strategy.get_actions()
+
+        for x in range(action):
+            self.execute_action(x)\
+
+        
+
+
+
 
 def event_action(scheduler):
     print('hello im doing an action')
     scheduler.enterabs(int(time.time()) + 1, 0, event_action, (scheduler))
 
-def setup_client(client):
-    """ Does initial setup tasks for a new client """
-    print('Doing setup tasks')
-    print('Getting leverage')
-    resp = client.Positions.Positions_userLeverage().result()
-    leverage = resp[0].get('result').get('BTCUSD').get('leverage')
-
-    if leverage != 5:
-        print('Setting leverage to 5x')
-        print(client.Positions.Positions_saveLeverage(symbol="BTCUSD", leverage="5").result())
-    else:
-        print('Leverage is 5x')
-
-    kwargs = {"symbol": "BTCUSD", "interval": "5", "from": (int(time.time()) - 200*300)}
-    print(client.Kline.Kline_get(**kwargs).result())
-
-
-    
 
 def main():
     # init new scheduler - more on this once the rest is working
     # EventScheduler = sched.scheduler(time.time, time.sleep)
     # EventScheduler.run()
 
-    # init bybit client
-    client = bybit.bybit(test=True, api_key=api_key, api_secret=private_key)
-    setup_client(client)
-    
+    bot = TradingBot()
+    bot.testing()
+
+    # exchange.place_order("Sell", "BTCUSD", 20)
 
 
 if __name__ == '__main__':
-    print('initialising')
     main()
