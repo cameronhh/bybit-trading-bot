@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 import ta
-
-
+from actions import Action
 
 WT_OVERBOUGHT_1 = 53
 WT_OVERBOUGHT_2 = 60
@@ -26,9 +25,13 @@ WT_AVERAGE_LENGTH = 12
 class Strategy:
     """ A Strategy manages generation of indicators on kline data and
         interpretting when actions should take place.
+        Must call Strategy.load_klines before using Strategy.get_action
     """
-    def __init__(self, data):
+    def __init__(self):
         print('initialising new strategy')
+        
+
+    def load_klines(self, data):
         self.df = pd.DataFrame.from_dict(data)
         
         self.df['interval'] = pd.to_numeric(self.df['interval'])
@@ -40,8 +43,8 @@ class Strategy:
         self.df['volume'] = pd.to_numeric(self.df['volume'])
         self.df['turnover'] = pd.to_numeric(self.df['turnover'])
 
-        self.add_indicators()
-        self.add_logic()
+        self._add_indicators()
+        self._add_logic()
 
     def _cross(self, series_a, series_b):
         result = pd.Series(index=series_a.index)
@@ -90,7 +93,7 @@ class Strategy:
             prev_a, prev_b = cur_a, cur_b
         return result
 
-    def add_indicators(self):
+    def _add_indicators(self):
         """ Define the indicators to be used by your strategy in this function.
         """
         print('adding indicators')
@@ -163,12 +166,12 @@ class Strategy:
         self.df['yellow_x'] = self.df.apply(yellow_x, axis=1)
         self.df['blood_diamond'] = self.df.apply(blood_diamond, axis=1)
         self.df['short_ema'] = self._crossover(self.df['ema_7'], self.df['ema_1'])
-        
+
         print(self.df)
 
 
 
-    def add_logic(self):
+    def _add_logic(self):
         """ Define the logic that decides when trades should be entered and exited.
             Adds columns to self.df: 'long', 'short', 'exitlong', 'exitshort'
             You must always add these columns for the backtester to work
@@ -179,6 +182,36 @@ class Strategy:
         self.df['short'] = self.df['short_ema']
         self.df['exitlong'] = self.df['short_ema']
         self.df['exitshort'] = self.df['long_ema']
+
+    def get_actions(self):
+        """ Returns which action (if any) to perform, based on the values in the 
+            last row of self.df.
+        """
+        last_row_index = len(self.df) - 1
+        ret_list = []
+
+        if self.df.loc[last_row_index]['long'] == 1:
+            ret_list.append(Action.OPEN_LONG)
+        if self.df.loc[last_row_index]['short'] == 1:
+            ret_list.append(Action.OPEN_SHORT)
+        if self.df.loc[last_row_index]['exitlong'] == 1:
+            ret_list.append(Action.CLOSE_LONG)
+        if self.df.loc[last_row_index]['exitshort'] == 1:
+            ret_list.append(Action.CLOSE_SHORT)
+        
+        if (len(ret_list) == 0):
+            ret_list.append(0)
+
+        ret_list.sort()
+
+        return ret_list
+        
+
+
+        # self.df['long'] = self.df['long_ema']
+        # self.df['short'] = self.df['short_ema']
+        # self.df['exitlong'] = self.df['short_ema']
+        # self.df['exitshort'] = self.df['long_ema']
         
 
 
