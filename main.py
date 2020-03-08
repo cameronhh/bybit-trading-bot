@@ -24,18 +24,26 @@ import time
 
 
 def main():
-    bot = TradingBot()
 
     cur_time = int(time.time()) % 300
+    time_remaining = 300 - cur_time
+
+    if time_remaining > 60:
+        print(f"{time_remaining} seconds until next candle, exiting until next job...")
+        return
     
-    while cur_time != 0:
-        time_to_sleep = max(300 - cur_time - 5, 0)
+    print(f"{time_remaining} seconds until next candle, continuing...")
+
+    bot = TradingBot()
+    while cur_time > 5:
+        time_to_sleep = max(0, time_remaining - 10)
 
         print(f"Sleeping for {time_to_sleep} seconds...")
 
         time.sleep(time_to_sleep)
-        
+
         cur_time = int(time.time()) % 300
+        time_remaining = 300 - cur_time
 
     bot.worker()
 

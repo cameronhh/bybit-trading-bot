@@ -29,8 +29,8 @@ import config
 
 class TradingBot:
     def __init__(self):
-        self.api_key = ''
-        self.private_key = ''
+        self.api_key = 'j0yZj8P6Bald6GwVKA'
+        self.private_key = 'NvIhmgPBoFQF9RfoTqswzGmouvg9JLLqvuYq'
 
         self.risk = 0.2     # 20% of available balance staked per trade
         self.leverage = 5
@@ -102,7 +102,9 @@ class TradingBot:
         for x in range(action):
             self.execute_action(x) """
 
-        if self.exchange.get_leverage("BTCUSD") == 5:
-            self.exchange.set_leverage("BTCUSD", "10")
-        else:
-            self.exchange.set_leverage("BTCUSD", "5")
+        # if self.exchange.get_leverage("BTCUSD") == 5:
+        #     self.exchange.set_leverage("BTCUSD", "10")
+        # else:
+        #     self.exchange.set_leverage("BTCUSD", "5")
+
+        self.exchange.place_order("Buy", "BTCUSD", 5)
