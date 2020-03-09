@@ -59,28 +59,32 @@ class TradingBot:
     def new_order_qty(self, coin):
         return self.avail_bal * self.risk * self.leverage * self.last_mark_price
 
-    def execute_action(action):
-        if action == Action.CLOSE_LONG:
-            print('doing CLOSE_LONG')
+    def execute_action(self, action):
+        if action == Action.NO_ACTION:
+            print(f"{time.time()} doing NO_ACTION")
+            return
+    
+        elif action == Action.CLOSE_LONG:
+            print(f"{time.time()} doing CLOSE_LONG")
             if self.position.get('side') == 'Buy': # in a long posn
                 open_qty = self.position.get('size')
                 self.exchange.place_order('Sell', 'BTCUSD', size)
             # else: # not in a long posn
 
         elif action == Action.CLOSE_SHORT:
-            print('doing CLOSE_SHORT')
+            print(f"{time.time()} doing CLOSE_SHORT")
             if self.position.get('side') == 'Sell': # in a short posn
                 open_qty = self.position.get('size')
                 self.exchange.place_order('Buy', 'BTCUSD', size)
             # else: # not in a short posn
 
         elif action == Action.OPEN_LONG:
-            print('doing OPEN_LONG')
+            print(f"{time.time()} doing OPEN_LONG")
             qty = self.new_order_qty("BTC")
             self.exchange.place_order("Buy", "BTCUSD", qty)
 
         elif action == Action.OPEN_SHORT:
-            print('doing OPEN_SHORT')
+            print(f"{time.time()} doing OPEN_SHORT")
             qty = self.new_order_qty("BTC")
             self.exchange.place_order("Sell", "BTCUSD", qty)
 
@@ -93,11 +97,12 @@ class TradingBot:
         # get data
         klines = self.exchange.get_klines("BTCUSD", "15")
         # load data
-        self.strategy.load_klines(data=klines.get('result'))
+        self.strategy.load_klines(data=klines[0].get('result'))
         # get action
         actions = self.strategy.get_actions()
 
-        for x in range(action):
+
+        for x in actions:
             self.execute_action(x)
 
         # if self.exchange.get_leverage("BTCUSD") == 5:
