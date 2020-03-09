@@ -41,7 +41,7 @@ class Backtester:
             at the current price, such that the given BTC amount (including fees) is used as margin
         """
         # TODO: fix for correct fee algorithm
-        fee = (self.contracts / end_price) * (0.00075)
+        # fee = (self.contracts / end_price) * (0.00075) # fee algorithm 
         return size_btc * (1 - (self.exchange_commission * self.leverage)) * cur_price * self.leverage
 
     def run_backtest(self):
