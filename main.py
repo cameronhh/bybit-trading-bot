@@ -19,14 +19,17 @@ Project structure:
 
 """
 
+TIME_PERIOD = 15 # in mins
+TIME_PERIOD_SECS = TIME_PERIOD * 60
+
 from bot import TradingBot
 import time
 
 
 def main():
 
-    cur_time = int(time.time()) % 300
-    time_remaining = 300 - cur_time
+    cur_time = int(time.time()) % TIME_PERIOD_SECS
+    time_remaining = TIME_PERIOD_SECS - cur_time
 
     if time_remaining > 60:
         print(f"{time_remaining} seconds until next candle, exiting until next job...")
@@ -42,8 +45,8 @@ def main():
 
         time.sleep(time_to_sleep)
 
-        cur_time = int(time.time()) % 300
-        time_remaining = 300 - cur_time
+        cur_time = int(time.time()) % TIME_PERIOD_SECS
+        time_remaining = TIME_PERIOD_SECS - cur_time
 
     bot.worker()
 
