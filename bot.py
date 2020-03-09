@@ -25,8 +25,6 @@ from exchange import BybitExchange
 from actions import Action
 from strategy import Strategy
 
-import config
-
 class TradingBot:
     def __init__(self):
         self.api_key = 'j0yZj8P6Bald6GwVKA'
@@ -92,19 +90,19 @@ class TradingBot:
     def worker(self):
         """ Run each time new kline data is ready.
         """
-        """ # get data
-        klines = self.exchange.get_klines("BTCUSD", "5")
+        # get data
+        klines = self.exchange.get_klines("BTCUSD", "15")
         # load data
         self.strategy.load_klines(data=klines.get('result'))
         # get action
         actions = self.strategy.get_actions()
 
         for x in range(action):
-            self.execute_action(x) """
+            self.execute_action(x)
 
         # if self.exchange.get_leverage("BTCUSD") == 5:
         #     self.exchange.set_leverage("BTCUSD", "10")
         # else:
         #     self.exchange.set_leverage("BTCUSD", "5")
 
-        self.exchange.place_order("Buy", "BTCUSD", 5)
+
