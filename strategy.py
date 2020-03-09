@@ -343,7 +343,7 @@ class Strategy:
             ret_list.append(Action.CLOSE_SHORT)
         
         if (len(ret_list) == 0):
-            ret_list.append(0)
+            ret_list.append(Action.NO_ACTION)
 
         ret_list.sort()
 
