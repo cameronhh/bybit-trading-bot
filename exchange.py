@@ -1,5 +1,6 @@
 
 import bybit, time
+from datetime import datetime
 
 class BybitExchange:
     def __init__(self, test=True, api_key="", private_key=""):
@@ -43,15 +44,48 @@ class BybitExchange:
             kwargs = { "symbol": symbol, "leverage": leverage }
             return self.client.Positions.Positions_saveLeverage(**kwargs).result()
         return f'Leverage already {leverage}'
+
+    def _int_from_interval(self, interval):
+        if interval in ["1", "3", "5", "15", "30", "60", "120", "240", "360", "720"]:
+            return int(interval)
+        elif interval == "D":
+            return 24 * 60
+        elif interval == "W":
+            return 24 * 60 * 7
+        # monthly and yearly not supported
+
+    def _get_klines_from_range(self, symbol, interval, start_time, end_time):
+        _interval_secs = self._int_from_interval(interval) * 60
+
+        cur_time = start_time
+        result = []
+        while cur_time < end_time:
+            kwargs = {"symbol": symbol, "interval": interval, "from": cur_time}
+            result += self.client.Kline.Kline_get(**kwargs).result()[0].get('result')
+            cur_time += 200 * _interval_secs
+            time.sleep(0.5)
+        return result
+
+    def _get_klines_from_limit(self, symbol, interval, limit):
+        _interval_secs = self._int_from_interval(interval) * 60
+        start_time = int(time.time()) - (limit * _interval_secs)
+        return self._get_klines_from_range(symbol, interval, start_time, int(time.time()))
+
+    def get_klines(self, symbol="BTCUSD", interval="1", start_time=None, end_time=None, limit=200, ):
+        """ start_time and end_time should be of the format `YYYY-MM-DD HH:MM`
+        """
+        interval = str(interval)
+
+        if start_time != None:
+            start_time = int(datetime.fromisoformat(start_time).timestamp())
+            if end_time == None:
+                end_time = int(time.time())
+            else:
+                end_time = int(date.fromisoformat(end_time).timestamp())
+            return self._get_klines_from_range(symbol, interval, start_time, end_time)
+        return self._get_klines_from_limit(symbol, interval, limit)
         
 
-    def get_klines(self, symbol, interval):
-        """ Get kline data
-            - TODO: Make this more robust,
-            - turn into a class that can get a ticker as well?
-        """
-        kwargs = {"symbol": symbol, "interval": interval, "from": (int(time.time()) - 200*300)}
-        return self.client.Kline.Kline_get(**kwargs).result()
 
     def analyse_history(self):
         # look at trading history and generate some metrics

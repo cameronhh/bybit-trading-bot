@@ -49,8 +49,17 @@ class Strategy:
         interpretting when actions should take place.
         Must call Strategy.load_klines before using Strategy.get_action
     """
-    def __init__(self):
-        print('initialising new strategy')
+    def __init__(self, wt_open_long=-65, wt_open_short=50, mfi_open=0, mfi_close=0, wt_exit_long=78, wt_exit_short=-88):
+        # print('initialising new strategy')
+
+        self.WT_OPEN_LONG_THRESHOLD = wt_open_long
+        self.WT_OPEN_SHORT_THRESHOLD = wt_open_short
+        self.MFI_OPEN_THRESHOLD = mfi_open
+        self.MFI_CLOSE_THRESHOLD = mfi_open
+        self.WT_EXIT_LONG_THRESHOLD = wt_exit_long
+        self.WT_EXIT_SHORT_THRESHOLD = wt_exit_short
+
+
         
 
     def load_klines(self, data):
@@ -245,31 +254,20 @@ class Strategy:
         # WaveTrend
         self.df['ap'] = (self.df['high'] + self.df['low'] + self.df['close']) / 3.0
         
-        esa = ta.trend.EMAIndicator(close=self.df['ap'], n=CHANNEL_LENGTH, fillna=False)
+        esa = ta.trend.EMAIndicator(close=self.df['ap'], n=CHANNEL_LENGTH, fillna=True)
         self.df['esa'] = esa.ema_indicator()
 
         self.df['d'] = abs(self.df['ap'] - self.df['esa'])
-        de = ta.trend.EMAIndicator(close=self.df['d'], n=CHANNEL_LENGTH, fillna=False)
+        de = ta.trend.EMAIndicator(close=self.df['d'], n=CHANNEL_LENGTH, fillna=True)
         self.df['de'] = de.ema_indicator()
 
-        self.df['ci'] = (self.df['ap'] - self.df['esa']) / (0.015 * self.df['d'])
+        self.df['ci'] = (self.df['ap'] - self.df['esa']) / (0.015 * self.df['de'])
         
-        tci = ta.trend.EMAIndicator(close=self.df['ci'], n=AVERAGE_LENGTH, fillna=False)
+        tci = ta.trend.EMAIndicator(close=self.df['ci'], n=AVERAGE_LENGTH, fillna=True)
         self.df['tci'] = tci.ema_indicator()
 
         self.df['wt1'] = self.df['tci'] # LIGHT blue wave
         self.df['wt2'] = self.df.rolling(window=3)['wt1'].mean()
-
-        # RSI's and divergences
-        self.df['log_close'] = np.log(self.df['close'])
-
-        rsi1w = ta.momentum.RSIIndicator(close=self.df['log_close'], n=LENGTH_RSI_W, fillna=False)
-        self.df['rsi1w'] = rsi1w.rsi()
-
-        kkw = ta.momentum.StochasticOscillator(close=self.df['rsi1w'], high=self.df['rsi1w'], low=self.df['rsi1w'], n=LENGTH_STOCH_W, d_n=SMOOTH_KW, fillna=False)
-        self.df['kkw'] = kkw.stoch()
-
-        self.df['dw'] = self.df.rolling(window=SMOOTH_DW)['kkw'].mean()
 
         
         pd.set_option('display.max_rows', 50)
@@ -277,6 +275,7 @@ class Strategy:
         self._add_ha_data()
 
         self.df['ha_candle_val'] = (self.df['ha_close'] - self.df['ha_open']) / (self.df['ha_high'] - self.df['ha_low'])
+        # self.df['ha_candle_val'] = (self.df['close'] - self.df['open']) / (self.df['high'] - self.df['low'])
 
         self.df['mvc'] = self.df.rolling(window=RSI_MFI_PERIOD)['ha_candle_val'].mean()
 
@@ -285,37 +284,44 @@ class Strategy:
         self.df['wt_cross_up'] = self._crossover(self.df['wt2'], self.df['wt1'])
         self.df['wt_cross_down'] = self._crossover(self.df['wt1'], self.df['wt2'])
 
+        self.df['log_mfi'] = np.log10(10 + abs(self.df['money_flow']))
+
     def _add_logic(self):
         """ Define the logic that decides when trades should be entered and exited.
             Adds columns to self.df: 'long', 'short', 'exitlong', 'exitshort'
             You must always add these columns for the backtester to work
         """
-        print('adding logic')
+
+        # print('adding logic')
         def __long():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['wt_cross_up'] == 1 and row['wt1'] < -65 and row['money_flow'] >= 0)
+                #result.iloc[index] = int(row['wt_cross_up'] == 1 and row['wt1'] < (self.WT_OPEN_LONG_THRESHOLD * row['log_mfi']))
+                result.iloc[index] = int(row['wt1'] < self.WT_OPEN_LONG_THRESHOLD and row['money_flow'] > self.MFI_OPEN_THRESHOLD) # and row['wt_cross_up'] == 1)
+                #result.iloc[index] = int(row['wt_cross_up'] == 1 and row['wt1'] < self.WT_OPEN_LONG_THRESHOLD  and row['money_flow'] >= self.MFI_OPEN_THRESHOLD)
 
             return result
         
         def __short():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['wt_cross_down'] == 1 and row['wt1'] > 50 and row['money_flow'] < 0)
+                #result.iloc[index] = int(row['wt_cross_down'] == 1 and row['wt1'] > (self.WT_OPEN_SHORT_THRESHOLD * row['log_mfi']))
+                result.iloc[index] = int(row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD and row['money_flow'] < self.MFI_CLOSE_THRESHOLD) # and row['wt_cross_down'] == 1)
+                # result.iloc[index] = int(row['wt_cross_down'] == 1 and row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD  and row['money_flow'] < self.MFI_CLOSE_THRESHOLD)
 
             return result
 
         def __exitlong():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['short'] == 1 or row['wt1'] > 78)
+                result.iloc[index] = int(row['short'] == 1 or row['wt1'] > self.WT_EXIT_LONG_THRESHOLD)
 
             return result
 
         def __exitshort():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['long'] == 1 or row['wt1'] < -88)
+                result.iloc[index] = int(row['long'] == 1 or row['wt1'] < self.WT_EXIT_SHORT_THRESHOLD)
 
             return result
 
@@ -324,13 +330,13 @@ class Strategy:
         self.df['exitlong'] = __exitlong()
         self.df['exitshort'] = __exitshort()
 
-        print(self.df)
+        # print(self.df)
 
     def get_actions(self):
         """ Returns which action (if any) to perform, based on the values in the 
             last row of self.df.
         """
-        last_row_index = len(self.df) - 1
+        last_row_index = len(self.df) - 2 # -2 because the last row will always be the currently incomplete candle
         ret_list = []
 
         if self.df.loc[last_row_index]['long'] == 1:

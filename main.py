@@ -19,11 +19,11 @@ Project structure:
 
 """
 
-TIME_PERIOD = 15 # in mins
+TIME_PERIOD = 5 # in mins
 TIME_PERIOD_SECS = TIME_PERIOD * 60
 
 from bot import TradingBot
-import time
+import time, configparser
 
 
 def main():

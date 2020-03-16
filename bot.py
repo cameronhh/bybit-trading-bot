@@ -20,22 +20,36 @@ Project structure:
 """
 
 
-import sched, time
+import sched, time, configparser
 from exchange import BybitExchange
 from actions import Action
 from strategy import Strategy
+import optuna
 
 class TradingBot:
     def __init__(self):
-        self.api_key = 'j0yZj8P6Bald6GwVKA'
-        self.private_key = 'NvIhmgPBoFQF9RfoTqswzGmouvg9JLLqvuYq'
+        key_config = configparser.ConfigParser()
+        key_config.read('keys.ini')
 
-        self.risk = 0.2     # 20% of available balance staked per trade
+        self.api_key = key_config['TESTNET']['API_KEY']
+        self.private_key = key_config['TESTNET']['API_SECRET']
+
+        self.risk = 0.05     # 5% of available balance staked per trade
         self.leverage = 5
 
         # init
         self.exchange = BybitExchange(test=True, api_key=self.api_key, private_key=self.private_key)
-        self.strategy = Strategy()
+
+        strategy_config = configparser.ConfigParser()
+        strategy_config.read('config.ini')
+        self.strategy = Strategy(
+            wt_open_long = strategy_config['DEFAULT']['WT_OPEN_LONG_THRESHOLD'],
+            wt_open_short = strategy_config['DEFAULT']['WT_OPEN_SHORT_THRESHOLD'],
+            mfi_open = strategy_config['DEFAULT']['MFI_OPEN_THRESHOLD'],
+            mfi_close = strategy_config['DEFAULT']['MFI_CLOSE_THRESHOLD'],
+            wt_exit_long = strategy_config['DEFAULT']['WT_EXIT_LONG_THRESHOLD'],
+            wt_exit_short = strategy_config['DEFAULT']['WT_EXIT_SHORT_THRESHOLD'],
+        )
 
         # check leverage
         self.exchange.set_leverage("BTCUSD",  "5")
@@ -91,13 +105,16 @@ class TradingBot:
         # update info as action is completed
         self.update_info()
 
+    def reconfigure_model(self):
+
+
     def worker(self):
         """ Run each time new kline data is ready.
         """
         # get data
-        klines = self.exchange.get_klines("BTCUSD", "15")
+        kline_data = self.exchange.get_klines(symbol="BTCUSD", interval="15", limit=200)
         # load data
-        self.strategy.load_klines(data=klines[0].get('result'))
+        self.strategy.load_klines(data=kline_data)
         # get action
         actions = self.strategy.get_actions()
 
