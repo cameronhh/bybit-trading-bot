@@ -296,18 +296,14 @@ class Strategy:
         def __long():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                #result.iloc[index] = int(row['wt_cross_up'] == 1 and row['wt1'] < (self.WT_OPEN_LONG_THRESHOLD * row['log_mfi']))
                 result.iloc[index] = int(row['wt1'] < self.WT_OPEN_LONG_THRESHOLD and row['money_flow'] > self.MFI_OPEN_THRESHOLD) # and row['wt_cross_up'] == 1)
-                #result.iloc[index] = int(row['wt_cross_up'] == 1 and row['wt1'] < self.WT_OPEN_LONG_THRESHOLD  and row['money_flow'] >= self.MFI_OPEN_THRESHOLD)
 
             return result
         
         def __short():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                #result.iloc[index] = int(row['wt_cross_down'] == 1 and row['wt1'] > (self.WT_OPEN_SHORT_THRESHOLD * row['log_mfi']))
                 result.iloc[index] = int(row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD and row['money_flow'] < self.MFI_CLOSE_THRESHOLD) # and row['wt_cross_down'] == 1)
-                # result.iloc[index] = int(row['wt_cross_down'] == 1 and row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD  and row['money_flow'] < self.MFI_CLOSE_THRESHOLD)
 
             return result
 
