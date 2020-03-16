@@ -45,7 +45,7 @@ if __name__ == '__main__':
     n_windows = 6
     window_size = 144
     n_klines = n_windows * window_size
-    n_train = 2
+    n_train = 4
 
     result = exchange.get_klines(symbol="BTCUSD", interval="5", limit=n_klines)
 
@@ -116,7 +116,7 @@ if __name__ == '__main__':
         backtester.print_report()
         print(f"sharpe ratio: {backtester.get_sharpe_ratio()}")
 
-        if backtester.get_sharpe_ratio() > 0.3:
+        if backtester.get_sharpe_ratio() > 0.05:
             print(f"Found successful strategy on the validation set.")
             print(study.best_params)
             break
