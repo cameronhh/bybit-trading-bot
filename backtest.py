@@ -48,9 +48,11 @@ class Backtester:
             return -1
         avg_return_percent = np.mean([(x.realised_pl/x.margin) for x in trades])
         try:
-            std_dev = statistics.stdev([(x.realised_pl/x.margin) for x in trades])
+            std_dev = statistics.pstdev([(min(x.realised_pl, 0)/x.margin) for x in trades])
         except:
             std_dev = 1
+        if std_dev == 0:
+            return -1
         return (avg_return_percent - rf) / std_dev
 
 
