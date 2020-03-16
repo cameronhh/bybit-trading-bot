@@ -27,12 +27,12 @@ from strategy import Strategy
 import optuna
 
 class TradingBot:
-    def __init__(self):
+    def __init__(self, test=True):
         key_config = configparser.ConfigParser()
         key_config.read('keys.ini')
 
-        self.api_key = key_config['TESTNET']['API_KEY']
-        self.private_key = key_config['TESTNET']['API_SECRET']
+        self.api_key = key_config['TESTNET']['API_KEY'] if test else key_config['MAINNET']['API_KEY']
+        self.private_key = key_config['TESTNET']['API_SECRET'] if test else key_config['MAINNET']['API_SECRET']
 
         self.risk = 0.05     # 5% of available balance staked per trade
         self.leverage = 5
