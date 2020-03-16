@@ -23,7 +23,7 @@ TIME_PERIOD = 5 # in mins
 TIME_PERIOD_SECS = TIME_PERIOD * 60
 
 from bot import TradingBot
-import time, configparser
+import time
 
 
 def main():
