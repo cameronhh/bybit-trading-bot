@@ -41,19 +41,25 @@ class Backtester:
     def get_total_realised_pl(self):
         return self.total_realised_pl
 
+    def _get_downside_deviation(self, trades):
+        sum = 0
+        for x in trades:
+            if x.realised_pl < 0:
+                sum += (x.realised_pl) * (x.realised_pl)
+        
+        dd = np.sqrt(sum/len(trades))
+        if dd == 0.0:
+            return 1
+        return np.sqrt(sum/len(trades)) * 100
+
     def get_sharpe_ratio(self):
         rf = 0.001
         trades = self.exchange.analyse_history()
         if len(trades) == 0:
             return -1
         avg_return_percent = np.mean([(x.realised_pl/x.margin) for x in trades])
-        try:
-            std_dev = statistics.pstdev([(min(x.realised_pl, 0)/x.margin) for x in trades])
-        except:
-            std_dev = 1
-        if std_dev == 0:
-            return -1
-        return (avg_return_percent - rf) / std_dev
+        dd = self._get_downside_deviation(trades)
+        return (avg_return_percent - rf) / dd
 
 
     def print_report(self):
