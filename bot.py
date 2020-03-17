@@ -1,30 +1,9 @@
+import configparser
+import time
 
-"""
-General Notes:
-    - project will be a 'forgetful' bot, meaning that it only stores enough data for it to calculate the indicators it uses
-    - forgetful also means that it will not need a database
-    - future intention is that it is not forgetful and stores everything
-    - there is an indicator library called 'ta' which can be used for most of the technical analysis
-
-Project structure:
-    - Bybit Client (downloaded)
-    - Kline data
-        - download from coinbase api - as data is better than the bybit API
-        - do technical analysis on the data
-        - define different states based on the technical analysis
-    - Logic for the client
-        - different actions based on different states
-        - stake size / risk management
-        - etc.
-
-"""
-
-
-import sched, time, configparser
-from exchange import BybitExchange
 from actions import Action
-from strategy import Strategy
-import optuna
+from exchange import BybitExchange
+from strategies.wt_strategy import WTStrategy
 
 class TradingBot:
     def __init__(self, test=True):
@@ -42,7 +21,7 @@ class TradingBot:
 
         strategy_config = configparser.ConfigParser()
         strategy_config.read('config.ini')
-        self.strategy = Strategy(
+        self.strategy = WTStrategy(
             wt_open_long = float(strategy_config['DEFAULT']['WT_OPEN_LONG_THRESHOLD']),
             wt_open_short = float(strategy_config['DEFAULT']['WT_OPEN_SHORT_THRESHOLD']),
             mfi_open = float(strategy_config['DEFAULT']['MFI_OPEN_THRESHOLD']),
