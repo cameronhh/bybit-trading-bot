@@ -28,13 +28,13 @@ class WTStrategy(BaseStrategy):
         interpretting when actions should take place.
         Must call Strategy.load_klines before using Strategy.get_action
     """
-    def __init__(self, wt_open_long=-65, wt_open_short=50, mfi_open=0, mfi_close=0, wt_exit_long=78, wt_exit_short=-88):
+    def __init__(self, wt_open_long=-65, wt_open_short=50, mfi_long=0, mfi_short=0, wt_exit_long=78, wt_exit_short=-88):
         super().__init__()
 
         self.WT_OPEN_LONG_THRESHOLD = wt_open_long
         self.WT_OPEN_SHORT_THRESHOLD = wt_open_short
-        self.MFI_OPEN_THRESHOLD = mfi_open
-        self.MFI_CLOSE_THRESHOLD = mfi_open
+        self.MFI_LONG_THRESHOLD = mfi_long
+        self.MFI_SHORT_THRESHOLD = mfi_short
         self.WT_EXIT_LONG_THRESHOLD = wt_exit_long
         self.WT_EXIT_SHORT_THRESHOLD = wt_exit_short
         
@@ -156,14 +156,14 @@ class WTStrategy(BaseStrategy):
         def __long():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['wt1'] < self.WT_OPEN_LONG_THRESHOLD and row['money_flow'] > self.MFI_OPEN_THRESHOLD) # and row['wt_cross_up'] == 1)
+                result.iloc[index] = int(row['wt1'] < self.WT_OPEN_LONG_THRESHOLD and row['money_flow'] > self.MFI_LONG_THRESHOLD) # and row['wt_cross_up'] == 1)
 
             return result
         
         def __short():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD and row['money_flow'] < self.MFI_CLOSE_THRESHOLD) # and row['wt_cross_down'] == 1)
+                result.iloc[index] = int(row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD and row['money_flow'] < self.MFI_SHORT_THRESHOLD) # and row['wt_cross_down'] == 1)
 
             return result
 

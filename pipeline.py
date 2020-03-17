@@ -26,7 +26,6 @@ class Pipeline:
             data = exchange.get_klines(symbol="BTCUSD", interval="5", limit=n_klines)
 
             if self.validate:
-                
                 n_train = 3
                 train_set_threshold = n_train * window_size
 
@@ -41,8 +40,8 @@ class Pipeline:
         config['DEFAULT'] = {   
             'WT_OPEN_LONG_THRESHOLD' : best_params.get('wt_open_long'),
             'WT_OPEN_SHORT_THRESHOLD' : best_params.get('wt_open_short'),
-            'MFI_OPEN_THRESHOLD' : best_params.get('mfi_open'),
-            'MFI_CLOSE_THRESHOLD' : best_params.get('mfi_close'),
+            'MFI_LONG_THRESHOLD' : best_params.get('mfi_long'),
+            'MFI_SHORT_THRESHOLD' : best_params.get('mfi_short'),
             'WT_EXIT_LONG_THRESHOLD' : best_params.get('wt_exit_long'),
             'WT_EXIT_SHORT_THRESHOLD' : best_params.get('wt_exit_short')
         }
@@ -64,25 +63,25 @@ class Pipeline:
         cur_wt_open_short = float(param_config['DEFAULT']['WT_OPEN_SHORT_THRESHOLD'])
         new_wt_open_short_max = min(cur_wt_open_short+40, 100)
         new_wt_open_short_min = max(cur_wt_open_short-40, -100)
-        cur_mfi_open = float(param_config['DEFAULT']['MFI_OPEN_THRESHOLD'])
-        new_mfi_open_max = min(cur_mfi_open+10, 40)
-        new_mfi_open_min = max(cur_mfi_open-10, -40)
-        cur_mfi_close = float(param_config['DEFAULT']['MFI_CLOSE_THRESHOLD'])
-        new_mfi_close_max = min(cur_mfi_close+10, 40)
-        new_mfi_close_min = max(cur_mfi_close-10, -40)
+        cur_mfi_long = float(param_config['DEFAULT']['MFI_LONG_THRESHOLD'])
+        new_mfi_long_max = 15
+        new_mfi_long_min = -15
+        cur_mfi_short = float(param_config['DEFAULT']['MFI_SHORT_THRESHOLD'])
+        new_mfi_short_max = 15
+        new_mfi_short_min = -15
         cur_wt_exit_long = float(param_config['DEFAULT']['WT_EXIT_LONG_THRESHOLD'])
         new_wt_exit_long_max = min(cur_wt_exit_long+40, 100)
-        new_wt_exit_long_min = max(cur_wt_exit_long-40, -100)
+        new_wt_exit_long_min = max(cur_wt_exit_long-40, -10)
         cur_wt_exit_short = float(param_config['DEFAULT']['WT_EXIT_SHORT_THRESHOLD'])
-        new_wt_exit_short_max = min(cur_wt_exit_short+40, 100)
+        new_wt_exit_short_max = min(cur_wt_exit_short+40, 10)
         new_wt_exit_short_min = max(cur_wt_exit_short-40, -100)
 
         def objective(trial):
             test_strategy = WTStrategy(
                 wt_open_long = trial.suggest_uniform('wt_open_long', new_wt_open_long_min, new_wt_open_long_max),
                 wt_open_short = trial.suggest_uniform('wt_open_short', new_wt_open_short_min, new_wt_open_short_max),
-                mfi_open = trial.suggest_uniform('mfi_open', new_mfi_open_min, new_mfi_open_max),
-                mfi_close = trial.suggest_uniform('mfi_close', new_mfi_close_min, new_mfi_close_max),
+                mfi_long = trial.suggest_uniform('mfi_long', new_mfi_long_min, new_mfi_long_max),
+                mfi_short = trial.suggest_uniform('mfi_short', new_mfi_short_min, new_mfi_short_max),
                 wt_exit_long = trial.suggest_uniform('wt_exit_long', new_wt_exit_long_min, new_wt_exit_long_max),
                 wt_exit_short = trial.suggest_uniform('wt_exit_short', new_wt_exit_short_min, new_wt_exit_short_max),
             )
@@ -101,8 +100,8 @@ class Pipeline:
                 validation_strat = WTStrategy(
                         wt_open_long = study.best_params.get('wt_open_long'),
                         wt_open_short = study.best_params.get('wt_open_short'),
-                        mfi_open = study.best_params.get('mfi_open'),
-                        mfi_close = study.best_params.get('mfi_close'),
+                        mfi_long = study.best_params.get('mfi_long'),
+                        mfi_short = study.best_params.get('mfi_short'),
                         wt_exit_long = study.best_params.get('wt_exit_long'),
                         wt_exit_short = study.best_params.get('wt_exit_short'),
                 )
@@ -112,7 +111,7 @@ class Pipeline:
                 backtester.print_report()
                 print(f"sharpe ratio: {backtester.get_sharpe_ratio()}")
 
-                if backtester.get_sharpe_ratio() > 0.05:
+                if backtester.get_sharpe_ratio() > 0.01:
                     print(f"Found successful strategy on the validation set.")
                     print(study.best_params)
                     break
@@ -127,5 +126,5 @@ class Pipeline:
 
 
 if __name__ == "__main__":
-    pipeline = Pipeline(test=True, load_klines=True, validate=False)
+    pipeline = Pipeline(test=True, load_klines=True, validate=True)
     pipeline.run_pipeline()

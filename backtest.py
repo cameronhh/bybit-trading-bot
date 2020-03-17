@@ -58,7 +58,7 @@ class Backtester:
             return -1
         avg_return_percent = np.mean([(x.realised_pl/x.margin) for x in trades])
         dd = self._get_downside_deviation(trades)
-        return (avg_return_percent - rf) / dd
+        return min((avg_return_percent - rf) / dd, 1.5)
 
 
     def print_report(self):
