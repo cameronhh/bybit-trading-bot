@@ -1,6 +1,9 @@
-import time, logging
-from bot import TradingBot
+import logging
+import time
+
 from apscheduler.schedulers.blocking import BlockingScheduler
+
+from bot import TradingBot
 from pipeline import Pipeline
 
 logging.basicConfig( level=logging.DEBUG, # TODO: work out how to do logging properly
