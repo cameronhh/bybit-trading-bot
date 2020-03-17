@@ -11,7 +11,8 @@ from exchange import BybitExchange
 from strategies.wt_strategy import WTStrategy
 
 class Pipeline:
-    def __init__(self, test=True, load_klines=True):
+    def __init__(self, test=True, load_klines=True, validate=True):
+        self.validate = validate
         if load_klines:
             config = configparser.ConfigParser()
             config.read('keys.ini')
@@ -19,15 +20,20 @@ class Pipeline:
             api_secret = config['TESTNET']['API_SECRET'] if test else config['MAINNET']['API_SECRET']
             exchange = BybitExchange(test=test, api_key=api_key, private_key=api_secret)
 
-            n_windows = 6
+            n_windows = 5
             window_size = 144
             n_klines = n_windows * window_size
-            n_train = 4
-            train_set_threshold = n_train * window_size
+            data = exchange.get_klines(symbol="BTCUSD", interval="5", limit=n_klines)
 
-            result = exchange.get_klines(symbol="BTCUSD", interval="5", limit=n_klines)
-            self.train_set = result[:train_set_threshold]
-            self.test_set = result[train_set_threshold:]
+            if self.validate:
+                
+                n_train = 3
+                train_set_threshold = n_train * window_size
+
+                self.train_set = data[:train_set_threshold]
+                self.test_set = data[train_set_threshold:]
+            else:
+                self.train_set = data
 
 
     def _update_config_file(self, best_params):
@@ -87,38 +93,39 @@ class Pipeline:
             # backtester.print_report()
             return (-1 * backtester.get_sharpe_ratio())
 
+        if self.validate:
+            while True:
+                study = optuna.create_study()
+                study.optimize(objective, n_trials=30)
+                print(study.best_params)
+                validation_strat = WTStrategy(
+                        wt_open_long = study.best_params.get('wt_open_long'),
+                        wt_open_short = study.best_params.get('wt_open_short'),
+                        mfi_open = study.best_params.get('mfi_open'),
+                        mfi_close = study.best_params.get('mfi_close'),
+                        wt_exit_long = study.best_params.get('wt_exit_long'),
+                        wt_exit_short = study.best_params.get('wt_exit_short'),
+                )
+                validation_strat.load_klines(data=self.test_set)
+                backtester = Backtester(strategy=validation_strat, stake_percent=0.05, pyramiding=12)
+                print(f"Validation report:::")
+                backtester.print_report()
+                print(f"sharpe ratio: {backtester.get_sharpe_ratio()}")
 
-        # study = optuna.create_study()
-        # study.optimize(objective, n_trials=30)
-        # print(study.best_params)
-
-        while True:
+                if backtester.get_sharpe_ratio() > 0.05:
+                    print(f"Found successful strategy on the validation set.")
+                    print(study.best_params)
+                    break
+        else:
             study = optuna.create_study()
             study.optimize(objective, n_trials=30)
             print(study.best_params)
-            validation_strat = WTStrategy(
-                    wt_open_long = study.best_params.get('wt_open_long'),
-                    wt_open_short = study.best_params.get('wt_open_short'),
-                    mfi_open = study.best_params.get('mfi_open'),
-                    mfi_close = study.best_params.get('mfi_close'),
-                    wt_exit_long = study.best_params.get('wt_exit_long'),
-                    wt_exit_short = study.best_params.get('wt_exit_short'),
-            )
-            validation_strat.load_klines(data=self.test_set)
-            backtester = Backtester(strategy=validation_strat, stake_percent=0.05, pyramiding=12)
-            print(f"Validation report:::")
-            backtester.print_report()
-            print(f"sharpe ratio: {backtester.get_sharpe_ratio()}")
-
-            if backtester.get_sharpe_ratio() > 0.05:
-                print(f"Found successful strategy on the validation set.")
-                print(study.best_params)
-                break
-
         self._update_config_file(study.best_params)
+
+        
 
 
 
 if __name__ == "__main__":
-    pipeline = Pipeline(test=True, load_klines=True)
+    pipeline = Pipeline(test=True, load_klines=True, validate=False)
     pipeline.run_pipeline()
