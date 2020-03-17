@@ -39,7 +39,7 @@ def trade_job():
 @sched.scheduled_job('cron', year='*', month='*', day='*', week='*', day_of_week='*', hour='0,3,6,9,12,15,18,21', minute='0', second='0')
 def backtest_job():
     logger.debug(f"running backtest job at time: {time.gmtime()}")
-    pipeline = Pipeline(test=True, load_klines=True)
+    pipeline = Pipeline(test=True, load_klines=True, validate=False)
     pipeline.run_pipeline()
 
 sched.start()
