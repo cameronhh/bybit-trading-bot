@@ -24,8 +24,8 @@ class TradingBot:
         self.strategy = WTStrategy(
             wt_open_long = float(strategy_config['DEFAULT']['WT_OPEN_LONG_THRESHOLD']),
             wt_open_short = float(strategy_config['DEFAULT']['WT_OPEN_SHORT_THRESHOLD']),
-            mfi_open = float(strategy_config['DEFAULT']['MFI_OPEN_THRESHOLD']),
-            mfi_close = float(strategy_config['DEFAULT']['MFI_CLOSE_THRESHOLD']),
+            mfi_long = float(strategy_config['DEFAULT']['MFI_LONG_THRESHOLD']),
+            mfi_short = float(strategy_config['DEFAULT']['MFI_SHORT_THRESHOLD']),
             wt_exit_long = float(strategy_config['DEFAULT']['WT_EXIT_LONG_THRESHOLD']),
             wt_exit_short = float(strategy_config['DEFAULT']['WT_EXIT_SHORT_THRESHOLD']),
         )
