@@ -1,6 +1,7 @@
-
-import bybit, time
 from datetime import datetime
+import time
+
+import bybit
 
 class BybitExchange:
     def __init__(self, test=True, api_key="", private_key=""):
