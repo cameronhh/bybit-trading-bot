@@ -1,7 +1,6 @@
-import time
-from strategy import Strategy
-import statistics
 import copy
+import time
+
 import numpy as np
 
 NO_POSITION = 0
