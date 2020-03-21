@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import ta
 
-from actions import Action
-from strategy import BaseStrategy
+from enums.actions import Action
+from strategies import BaseStrategy
 
 ### Old
 

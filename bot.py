@@ -1,7 +1,7 @@
 import configparser
 import time
 
-from actions import Action
+from enums.actions import Action
 from exchange import BybitExchange
 from strategies.wt_strategy import WTStrategy
 
@@ -20,7 +20,7 @@ class TradingBot:
         self.exchange = BybitExchange(test=True, api_key=self.api_key, private_key=self.private_key)
 
         strategy_config = configparser.ConfigParser()
-        strategy_config.read('config.ini')
+        strategy_config.read('strategies/configs/wt_config.ini')
         self.strategy = WTStrategy(
             wt_open_long = float(strategy_config['DEFAULT']['WT_OPEN_LONG_THRESHOLD']),
             wt_open_short = float(strategy_config['DEFAULT']['WT_OPEN_SHORT_THRESHOLD']),

@@ -60,7 +60,6 @@ class Backtester:
         dd = self._get_downside_deviation(trades)
         return min((avg_return_percent - rf) / dd, 1.5)
 
-
     def print_report(self):
         print(f"Backtesting report:")
         n_profitable = 0
@@ -91,8 +90,6 @@ class Backtester:
         print(f"    percetage profitable: {perc_prof}")
         print(f"    profit factor: {prof_factor}")
 
-
-
     def _get_order_size(self, size_btc, cur_price):
         """ Given the amount of BTC you want to stake, returns the amount of contracts to buy
             at the current price, such that the given BTC amount (including fees) is used as margin
@@ -121,12 +118,6 @@ class Backtester:
         
         if (self.exchange.position != None):
             self._exit_position(last_close) # TODO unhardcode this
-
-        # print('backtest complete')
-        # print('total positions: ' + str(self.n_trades))
-        # print('total pl: ' + str(self.total_realised_pl))
-        # print()
-
 
     def _long(self, cur_price, margin, contracts, fee):
         if self.state == NO_POSITION:
@@ -182,8 +173,6 @@ class Backtester:
             self.current_position = None
             self.total_equity += (original_margin + realised_pl) - fee
             
-
-
 class MockExchange:
     def __init__(self, initial_capital=1, leverage=5, commission=0.00075):
         self.capital = initial_capital
@@ -207,9 +196,6 @@ class MockExchange:
     def analyse_history(self):
         # look at trading history and generate some metrics            
         return self.trading_history
-
-
-
 
 class Position:
     def __init__(self, long=True, margin=0.2, contracts=100, start_price=0.0, leverage=5):
@@ -250,3 +236,7 @@ class Position:
     def __str__(self):
         return f"posn:\n\tlong={self.long}\n\tsize={self.contracts}\n\tinit_margin={self.margin}\n\tavg_entry_price={self.average_entry_price}\n\tclose_price={self.end_price}\n\trealised_pl={self.realised_pl}\n\tfee={self.closing_fee}"
 
+
+if __name__ == "__main__":
+    pipeline = Pipeline(test=True, load_klines=True, validate=False)
+    pipeline.run_pipeline()

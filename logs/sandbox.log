@@ -1,0 +1,617 @@
+2020-03-17 23:16:46,297 apscheduler.scheduler INFO     Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-03-17 23:16:46,298 apscheduler.scheduler INFO     Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-03-17 23:16:46,298 apscheduler.scheduler INFO     Added job "trade_job" to job store "default"
+2020-03-17 23:16:46,298 apscheduler.scheduler INFO     Added job "backtest_job" to job store "default"
+2020-03-17 23:16:46,298 apscheduler.scheduler INFO     Scheduler started
+2020-03-17 23:16:46,298 apscheduler.scheduler DEBUG    Looking for jobs to run
+2020-03-17 23:16:46,298 apscheduler.scheduler DEBUG    Next wakeup is due at 2020-03-17 13:19:50+00:00 (in 183.701232 seconds)
+2020-03-17 23:19:50,009 apscheduler.scheduler DEBUG    Looking for jobs to run
+2020-03-17 23:19:50,010 apscheduler.executors.default INFO     Running job "trade_job (trigger: cron[year='*', month='*', day='*', week='*', day_of_week='*', hour='*', minute='4,9,14,19,24,29,34,39,44,49,54,59', second='50'], next run at: 2020-03-17 13:19:50 UTC)" (scheduled at 2020-03-17 13:19:50+00:00)
+2020-03-17 23:19:50,010 sandbox      DEBUG    running trade job at time: time.struct_time(tm_year=2020, tm_mon=3, tm_mday=17, tm_hour=13, tm_min=19, tm_sec=50, tm_wday=1, tm_yday=77, tm_isdst=0)
+2020-03-17 23:19:50,010 apscheduler.scheduler DEBUG    Next wakeup is due at 2020-03-17 13:24:50+00:00 (in 299.990430 seconds)
+2020-03-17 23:19:50,011 bravado.client DEBUG    Loading from https://api-testnet.bybit.com/doc/swagger.txt
+2020-03-17 23:19:50,063 urllib3.connectionpool DEBUG    Starting new HTTPS connection (1): api-testnet.bybit.com:443
+2020-03-17 23:19:52,593 urllib3.connectionpool DEBUG    https://api-testnet.bybit.com:443 "GET /doc/swagger.txt?timestamp=1584451189000&api_key=j0yZj8P6Bald6GwVKA&sign=5f90f4b4923f097ab99245b0f4de61627b4d200fdccce99e3df8c7b2892b8580 HTTP/1.1" 200 6721
+2020-03-17 23:19:52,762 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderListData'}
+2020-03-17 23:19:52,762 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderRes'}
+2020-03-17 23:19:52,764 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/WithdrawBalance'}
+2020-03-17 23:19:52,765 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/lot_size_filter'}
+2020-03-17 23:19:52,765 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/price_filter'}
+2020-03-17 23:19:52,766 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/APIKeyInfo'}
+2020-03-17 23:19:52,767 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/LeverageResult'}
+2020-03-17 23:19:52,767 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/LeverageInfo'}
+2020-03-17 23:19:52,767 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/LeverageInfo'}
+2020-03-17 23:19:52,767 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/LeverageInfo'}
+2020-03-17 23:19:52,768 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/LeverageInfo'}
+2020-03-17 23:19:52,771 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/RiskIDRes'}
+2020-03-17 23:19:52,772 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/PositionInfo'}
+2020-03-17 23:19:52,773 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/TradingStopRes'}
+2020-03-17 23:19:52,775 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalOrdersRes'}
+2020-03-17 23:19:52,775 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalRes'}
+2020-03-17 23:19:52,777 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/GetRiskLimitRes'}
+2020-03-17 23:19:52,777 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/RiskIDRes'}
+2020-03-17 23:19:52,778 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,779 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/SymbolTickInfo'}
+2020-03-17 23:19:52,781 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingRate'}
+2020-03-17 23:19:52,782 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingRecords'}
+2020-03-17 23:19:52,783 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/WithdrawRecords'}
+2020-03-17 23:19:52,783 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalCancelAllRes'}
+2020-03-17 23:19:52,785 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/SymbolInfo'}
+2020-03-17 23:19:52,785 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/lot_size_filter already has scope attached
+2020-03-17 23:19:52,785 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/price_filter already has scope attached
+2020-03-17 23:19:52,788 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderRes'}
+2020-03-17 23:19:52,789 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/QueryOrderRes'}
+2020-03-17 23:19:52,789 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/extFields'}
+2020-03-17 23:19:52,790 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/RiskLimitRes'}
+2020-03-17 23:19:52,791 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskIDRes already has scope attached
+2020-03-17 23:19:52,791 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/PositionInfo already has scope attached
+2020-03-17 23:19:52,793 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalRes already has scope attached
+2020-03-17 23:19:52,794 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/KlineRes'}
+2020-03-17 23:19:52,795 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/extFields already has scope attached
+2020-03-17 23:19:52,796 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskIDRes already has scope attached
+2020-03-17 23:19:52,799 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/TradeRecordsInfo'}
+2020-03-17 23:19:52,801 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingPredicted'}
+2020-03-17 23:19:52,802 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderCancelAllRes'}
+2020-03-17 23:19:52,803 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/TradeRecords'}
+2020-03-17 23:19:52,803 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradeRecordsInfo already has scope attached
+2020-03-17 23:19:52,805 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingFeeRes'}
+2020-03-17 23:19:52,806 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OderBookRes'}
+2020-03-17 23:19:52,807 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,807 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,807 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,808 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,808 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/PositionInfo'}
+2020-03-17 23:19:52,810 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalRes'}
+2020-03-17 23:19:52,814 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderRes'}
+2020-03-17 23:19:52,816 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ServerTime'}
+2020-03-17 23:19:52,817 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/APIKeyBase'}
+2020-03-17 23:19:52,817 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/APIKeyInfo already has scope attached
+2020-03-17 23:19:52,818 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/Symbols'}
+2020-03-17 23:19:52,819 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/SymbolInfo already has scope attached
+2020-03-17 23:19:52,819 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/lot_size_filter already has scope attached
+2020-03-17 23:19:52,819 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/price_filter already has scope attached
+2020-03-17 23:19:52,820 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/Leverage'}
+2020-03-17 23:19:52,821 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageResult already has scope attached
+2020-03-17 23:19:52,821 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,821 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,821 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,822 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,823 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ServerTime'}
+2020-03-17 23:19:52,824 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/Position'}
+2020-03-17 23:19:52,824 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/PositionInfo already has scope attached
+2020-03-17 23:19:52,827 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/Position'}
+2020-03-17 23:19:52,827 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/PositionInfo already has scope attached
+2020-03-17 23:19:52,830 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ServerTime'}
+2020-03-17 23:19:52,832 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/TradingStopBase'}
+2020-03-17 23:19:52,832 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradingStopRes already has scope attached
+2020-03-17 23:19:52,838 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundRecordBase'}
+2020-03-17 23:19:52,838 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingRecords already has scope attached
+2020-03-17 23:19:52,842 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/WithdrawResBase'}
+2020-03-17 23:19:52,842 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/WithdrawRecords already has scope attached
+2020-03-17 23:19:52,844 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/WithdrawBalance'}
+2020-03-17 23:19:52,845 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/SetRiskLimitBase'}
+2020-03-17 23:19:52,846 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskLimitRes already has scope attached
+2020-03-17 23:19:52,846 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskIDRes already has scope attached
+2020-03-17 23:19:52,847 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/PositionInfo already has scope attached
+2020-03-17 23:19:52,849 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/RiskLimitBase'}
+2020-03-17 23:19:52,849 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/GetRiskLimitRes already has scope attached
+2020-03-17 23:19:52,850 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskIDRes already has scope attached
+2020-03-17 23:19:52,855 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderResBase'}
+2020-03-17 23:19:52,855 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,861 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderResBase'}
+2020-03-17 23:19:52,861 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,865 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderListBase'}
+2020-03-17 23:19:52,865 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderListData already has scope attached
+2020-03-17 23:19:52,866 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,868 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderCancelBase'}
+2020-03-17 23:19:52,868 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,871 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderCancelBase'}
+2020-03-17 23:19:52,872 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,873 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderCancelAllBase'}
+2020-03-17 23:19:52,874 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderCancelAllRes already has scope attached
+2020-03-17 23:19:52,877 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ReplaceOrderBase'}
+2020-03-17 23:19:52,878 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/QueryOrderBase'}
+2020-03-17 23:19:52,878 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/QueryOrderRes already has scope attached
+2020-03-17 23:19:52,879 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/extFields already has scope attached
+2020-03-17 23:19:52,884 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalBase'}
+2020-03-17 23:19:52,885 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalRes already has scope attached
+2020-03-17 23:19:52,889 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalOrdersResBase'}
+2020-03-17 23:19:52,889 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalOrdersRes already has scope attached
+2020-03-17 23:19:52,889 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalRes already has scope attached
+2020-03-17 23:19:52,891 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalBase'}
+2020-03-17 23:19:52,891 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalRes already has scope attached
+2020-03-17 23:19:52,893 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ConditionalCancelAllBase'}
+2020-03-17 23:19:52,893 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalCancelAllRes already has scope attached
+2020-03-17 23:19:52,897 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/ReplaceConditionalBase'}
+2020-03-17 23:19:52,898 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingRateBase'}
+2020-03-17 23:19:52,898 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingRate already has scope attached
+2020-03-17 23:19:52,899 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingFeeBase'}
+2020-03-17 23:19:52,900 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingFeeRes already has scope attached
+2020-03-17 23:19:52,901 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/FundingPredictedBase'}
+2020-03-17 23:19:52,901 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingPredicted already has scope attached
+2020-03-17 23:19:52,905 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/TradeRecordsBase'}
+2020-03-17 23:19:52,905 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradeRecords already has scope attached
+2020-03-17 23:19:52,905 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradeRecordsInfo already has scope attached
+2020-03-17 23:19:52,908 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/OrderBookBase'}
+2020-03-17 23:19:52,908 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OderBookRes already has scope attached
+2020-03-17 23:19:52,909 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/SymbolInfoBase'}
+2020-03-17 23:19:52,909 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/SymbolTickInfo already has scope attached
+2020-03-17 23:19:52,913 swagger_spec_validator.ref_validators DEBUG    Attaching x-scope to {'$ref': '#/definitions/KlineBase'}
+2020-03-17 23:19:52,913 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/KlineRes already has scope attached
+2020-03-17 23:19:52,919 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/APIKeyInfo
+2020-03-17 23:19:52,919 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalRes
+2020-03-17 23:19:52,919 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalCancelAllRes
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalRes
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalOrdersRes
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingRecords
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingFeeRes
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingPredicted
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingRate
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/RiskIDRes
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/KlineRes
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/LeverageResult
+2020-03-17 23:19:52,920 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/LeverageInfo
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/LeverageInfo
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/LeverageInfo
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/LeverageInfo
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OderBookRes
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderCancelAllRes
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderRes
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderListData
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderRes
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderRes
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/PositionInfo
+2020-03-17 23:19:52,921 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/QueryOrderRes
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/extFields
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/GetRiskLimitRes
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/PositionInfo
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/RiskIDRes
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/RiskLimitRes
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/lot_size_filter
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/price_filter
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/SymbolTickInfo
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/SymbolInfo
+2020-03-17 23:19:52,922 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/TradeRecordsInfo
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/TradeRecords
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/TradingStopRes
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/WithdrawBalance
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/WithdrawRecords
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/APIKeyBase
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingPredictedBase
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingFeeBase
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundingRateBase
+2020-03-17 23:19:52,923 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderCancelBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderResBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderListBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ReplaceOrderBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/TradingStopBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalOrdersResBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ReplaceConditionalBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/FundRecordBase
+2020-03-17 23:19:52,924 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/SetRiskLimitBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/RiskLimitBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/WithdrawResBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ServerTime
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/Position
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/Leverage
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ServerTime
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/TradeRecordsBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/QueryOrderBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderCancelBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderCancelAllBase
+2020-03-17 23:19:52,925 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderResBase
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/Position
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ConditionalCancelAllBase
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/WithdrawBalance
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/KlineBase
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/OrderBookBase
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/Symbols
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/SymbolInfoBase
+2020-03-17 23:19:52,926 swagger_spec_validator.validator20 DEBUG    Resolving #/definitions/ServerTime
+2020-03-17 23:19:52,926 bravado_core.model DEBUG    Found model: APIKeyBase (is_blessed False)
+2020-03-17 23:19:52,927 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/APIKeyInfo already has scope attached
+2020-03-17 23:19:52,927 bravado_core.model DEBUG    Found model: APIKeyInfo (is_blessed False)
+2020-03-17 23:19:52,927 bravado_core.model DEBUG    Already visited id 5249565200
+2020-03-17 23:19:52,927 bravado_core.model DEBUG    Already visited id 5249565312
+2020-03-17 23:19:52,927 bravado_core.model DEBUG    Already visited id 5249569456
+2020-03-17 23:19:52,927 bravado_core.model DEBUG    Found model: ConditionalBase (is_blessed False)
+2020-03-17 23:19:52,927 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalRes already has scope attached
+2020-03-17 23:19:52,928 bravado_core.model DEBUG    Found model: ConditionalCancelAllBase (is_blessed False)
+2020-03-17 23:19:52,928 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalCancelAllRes already has scope attached
+2020-03-17 23:19:52,928 bravado_core.model DEBUG    Found model: ConditionalCancelAllRes (is_blessed False)
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5215536400
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5249659040
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5249654384
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Found model: ConditionalOrdersRes (is_blessed False)
+2020-03-17 23:19:52,929 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalRes already has scope attached
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5215536112
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5249648432
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5249652336
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Found model: ConditionalOrdersResBase (is_blessed False)
+2020-03-17 23:19:52,929 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalOrdersRes already has scope attached
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited #/definitions/ConditionalOrdersRes
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Found model: ConditionalRes (is_blessed False)
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5215536112
+2020-03-17 23:19:52,929 bravado_core.model DEBUG    Already visited id 5249648432
+2020-03-17 23:19:52,930 bravado_core.model DEBUG    Already visited id 5249652336
+2020-03-17 23:19:52,930 bravado_core.model DEBUG    Found model: FundRecordBase (is_blessed False)
+2020-03-17 23:19:52,930 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingRecords already has scope attached
+2020-03-17 23:19:52,930 bravado_core.model DEBUG    Found model: FundingFeeBase (is_blessed False)
+2020-03-17 23:19:52,930 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingFeeRes already has scope attached
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Found model: FundingFeeRes (is_blessed False)
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Already visited id 5249677472
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Already visited id 5249677584
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Already visited id 5249674288
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Found model: FundingPredicted (is_blessed False)
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Found model: FundingPredictedBase (is_blessed False)
+2020-03-17 23:19:52,931 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingPredicted already has scope attached
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Already visited #/definitions/FundingPredicted
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Found model: FundingRate (is_blessed False)
+2020-03-17 23:19:52,931 bravado_core.model DEBUG    Found model: FundingRateBase (is_blessed False)
+2020-03-17 23:19:52,932 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingRate already has scope attached
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Already visited #/definitions/FundingRate
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Found model: FundingRecords (is_blessed False)
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Already visited id 5249723328
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Already visited id 5249723440
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Already visited id 5249731952
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Found model: GetRiskLimitRes (is_blessed False)
+2020-03-17 23:19:52,932 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskIDRes already has scope attached
+2020-03-17 23:19:52,932 bravado_core.model DEBUG    Found model: KlineBase (is_blessed False)
+2020-03-17 23:19:52,933 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/KlineRes already has scope attached
+2020-03-17 23:19:52,933 bravado_core.model DEBUG    Found model: KlineRes (is_blessed False)
+2020-03-17 23:19:52,933 bravado_core.model DEBUG    Already visited id 5249721568
+2020-03-17 23:19:52,933 bravado_core.model DEBUG    Already visited id 5249721680
+2020-03-17 23:19:52,933 bravado_core.model DEBUG    Already visited id 5249729968
+2020-03-17 23:19:52,933 bravado_core.model DEBUG    Found model: Leverage (is_blessed False)
+2020-03-17 23:19:52,933 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageResult already has scope attached
+2020-03-17 23:19:52,933 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,933 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,933 bravado_core.model DEBUG    Already visited id 5249568352
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249570544
+2020-03-17 23:19:52,934 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249568352
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249570544
+2020-03-17 23:19:52,934 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/LeverageInfo already has scope attached
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249568352
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249570544
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Found model: LeverageInfo (is_blessed False)
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249568352
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249570544
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Found model: LeverageResult (is_blessed False)
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249567232
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Already visited id 5249570416
+2020-03-17 23:19:52,934 bravado_core.model DEBUG    Found model: OderBookRes (is_blessed False)
+2020-03-17 23:19:52,935 bravado_core.model DEBUG    Found model: OrderBookBase (is_blessed False)
+2020-03-17 23:19:52,935 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OderBookRes already has scope attached
+2020-03-17 23:19:52,935 bravado_core.model DEBUG    Already visited #/definitions/OderBookRes
+2020-03-17 23:19:52,935 bravado_core.model DEBUG    Found model: OrderCancelAllBase (is_blessed False)
+2020-03-17 23:19:52,935 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderCancelAllRes already has scope attached
+2020-03-17 23:19:52,936 bravado_core.model DEBUG    Found model: OrderCancelAllRes (is_blessed False)
+2020-03-17 23:19:52,936 bravado_core.model DEBUG    Already visited id 5215535920
+2020-03-17 23:19:52,936 bravado_core.model DEBUG    Already visited id 5249617824
+2020-03-17 23:19:52,936 bravado_core.model DEBUG    Already visited id 5249634544
+2020-03-17 23:19:52,936 bravado_core.model DEBUG    Found model: OrderCancelBase (is_blessed False)
+2020-03-17 23:19:52,936 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,937 bravado_core.model DEBUG    Found model: OrderListBase (is_blessed False)
+2020-03-17 23:19:52,937 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderListData already has scope attached
+2020-03-17 23:19:52,937 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,937 bravado_core.model DEBUG    Already visited id 5249600448
+2020-03-17 23:19:52,937 bravado_core.model DEBUG    Already visited id 5249600560
+2020-03-17 23:19:52,937 bravado_core.model DEBUG    Already visited id 5249618928
+2020-03-17 23:19:52,937 bravado_core.model DEBUG    Found model: OrderListData (is_blessed False)
+2020-03-17 23:19:52,937 bravado_core.model DEBUG    Already visited id 5249615472
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Already visited id 5249615584
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Already visited id 5249619696
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Found model: OrderRes (is_blessed False)
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Already visited id 5249600448
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Already visited id 5249600560
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Already visited id 5249618928
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Found model: OrderResBase (is_blessed False)
+2020-03-17 23:19:52,938 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderRes already has scope attached
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Already visited #/definitions/OrderRes
+2020-03-17 23:19:52,938 bravado_core.model DEBUG    Found model: Position (is_blessed False)
+2020-03-17 23:19:52,938 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/PositionInfo already has scope attached
+2020-03-17 23:19:52,939 bravado_core.model DEBUG    Found model: PositionInfo (is_blessed False)
+2020-03-17 23:19:52,939 bravado_core.model DEBUG    Already visited id 5249589936
+2020-03-17 23:19:52,939 bravado_core.model DEBUG    Already visited id 5249580400
+2020-03-17 23:19:52,939 bravado_core.model DEBUG    Already visited id 5249607408
+2020-03-17 23:19:52,939 bravado_core.model DEBUG    Found model: QueryOrderBase (is_blessed False)
+2020-03-17 23:19:52,939 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/QueryOrderRes already has scope attached
+2020-03-17 23:19:52,940 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/extFields already has scope attached
+2020-03-17 23:19:52,940 bravado_core.model DEBUG    Found model: QueryOrderRes (is_blessed False)
+2020-03-17 23:19:52,940 bravado_core.model DEBUG    Already visited id 5215255104
+2020-03-17 23:19:52,940 bravado_core.model DEBUG    Already visited id 5249633168
+2020-03-17 23:19:52,940 bravado_core.model DEBUG    Already visited id 5249637104
+2020-03-17 23:19:52,940 bravado_core.model DEBUG    Found model: ReplaceConditionalBase (is_blessed False)
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Found model: ReplaceOrderBase (is_blessed False)
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Found model: RiskIDRes (is_blessed False)
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Already visited id 5249757744
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Already visited id 5249754848
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Already visited id 5249758896
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Found model: RiskLimitBase (is_blessed False)
+2020-03-17 23:19:52,941 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/GetRiskLimitRes already has scope attached
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Already visited #/definitions/GetRiskLimitRes
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Found model: RiskLimitRes (is_blessed False)
+2020-03-17 23:19:52,941 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/PositionInfo already has scope attached
+2020-03-17 23:19:52,941 bravado_core.model DEBUG    Already visited #/definitions/PositionInfo
+2020-03-17 23:19:52,941 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskIDRes already has scope attached
+2020-03-17 23:19:52,942 bravado_core.model DEBUG    Already visited #/definitions/RiskIDRes
+2020-03-17 23:19:52,942 bravado_core.model DEBUG    Found model: ServerTime (is_blessed False)
+2020-03-17 23:19:52,942 bravado_core.model DEBUG    Found model: SetRiskLimitBase (is_blessed False)
+2020-03-17 23:19:52,942 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskLimitRes already has scope attached
+2020-03-17 23:19:52,942 bravado_core.model DEBUG    Already visited #/definitions/RiskLimitRes
+2020-03-17 23:19:52,942 bravado_core.model DEBUG    Found model: SymbolInfo (is_blessed False)
+2020-03-17 23:19:52,942 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/lot_size_filter already has scope attached
+2020-03-17 23:19:52,942 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/price_filter already has scope attached
+2020-03-17 23:19:52,943 bravado_core.model DEBUG    Found model: SymbolInfoBase (is_blessed False)
+2020-03-17 23:19:52,943 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/SymbolTickInfo already has scope attached
+2020-03-17 23:19:52,943 bravado_core.model DEBUG    Found model: SymbolTickInfo (is_blessed False)
+2020-03-17 23:19:52,943 bravado_core.model DEBUG    Already visited id 5249706064
+2020-03-17 23:19:52,943 bravado_core.model DEBUG    Already visited id 5249706176
+2020-03-17 23:19:52,943 bravado_core.model DEBUG    Already visited id 5249715888
+2020-03-17 23:19:52,943 bravado_core.model DEBUG    Found model: Symbols (is_blessed False)
+2020-03-17 23:19:52,944 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/SymbolInfo already has scope attached
+2020-03-17 23:19:52,944 bravado_core.model DEBUG    Already visited #/definitions/SymbolInfo
+2020-03-17 23:19:52,944 bravado_core.model DEBUG    Found model: TradeRecords (is_blessed False)
+2020-03-17 23:19:52,944 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradeRecordsInfo already has scope attached
+2020-03-17 23:19:52,944 bravado_core.model DEBUG    Found model: TradeRecordsBase (is_blessed False)
+2020-03-17 23:19:52,944 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradeRecords already has scope attached
+2020-03-17 23:19:52,945 bravado_core.model DEBUG    Already visited #/definitions/TradeRecords
+2020-03-17 23:19:52,945 bravado_core.model DEBUG    Found model: TradeRecordsInfo (is_blessed False)
+2020-03-17 23:19:52,945 bravado_core.model DEBUG    Already visited id 5215536880
+2020-03-17 23:19:52,945 bravado_core.model DEBUG    Already visited id 5249693648
+2020-03-17 23:19:52,945 bravado_core.model DEBUG    Already visited id 5249698928
+2020-03-17 23:19:52,945 bravado_core.model DEBUG    Found model: TradingStopBase (is_blessed False)
+2020-03-17 23:19:52,945 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradingStopRes already has scope attached
+2020-03-17 23:19:52,946 bravado_core.model DEBUG    Found model: TradingStopRes (is_blessed False)
+2020-03-17 23:19:52,946 bravado_core.model DEBUG    Already visited id 5215537264
+2020-03-17 23:19:52,946 bravado_core.model DEBUG    Already visited id 5249766416
+2020-03-17 23:19:52,946 bravado_core.model DEBUG    Already visited id 5249780528
+2020-03-17 23:19:52,946 bravado_core.model DEBUG    Found model: WithdrawBalance (is_blessed False)
+2020-03-17 23:19:52,946 bravado_core.model DEBUG    Found model: WithdrawBalanceBase (is_blessed False)
+2020-03-17 23:19:52,947 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/WithdrawBalance already has scope attached
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Already visited #/definitions/WithdrawBalance
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Found model: WithdrawRecords (is_blessed False)
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Found model: WithdrawResBase (is_blessed False)
+2020-03-17 23:19:52,947 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/WithdrawRecords already has scope attached
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Already visited #/definitions/WithdrawRecords
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Found model: extFields (is_blessed False)
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Already visited id 5249637232
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Already visited id 5249647232
+2020-03-17 23:19:52,947 bravado_core.model DEBUG    Already visited id 5249637808
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Found model: lot_size_filter (is_blessed False)
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Already visited id 5249579120
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Already visited id 5249572464
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Found model: price_filter (is_blessed False)
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Already visited id 5249578720
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Already visited id 5249572016
+2020-03-17 23:19:52,948 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/APIKeyBase already has scope attached
+2020-03-17 23:19:52,948 bravado_core.model DEBUG    Already visited #/definitions/APIKeyBase
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,949 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingPredictedBase already has scope attached
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited #/definitions/FundingPredictedBase
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,949 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingFeeBase already has scope attached
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited #/definitions/FundingFeeBase
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,949 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,949 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundingRateBase already has scope attached
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited #/definitions/FundingRateBase
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,950 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderCancelBase already has scope attached
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited #/definitions/OrderCancelBase
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,950 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderResBase already has scope attached
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited #/definitions/OrderResBase
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,951 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderListBase already has scope attached
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited #/definitions/OrderListBase
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,952 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,953 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ReplaceOrderBase already has scope attached
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited #/definitions/ReplaceOrderBase
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,953 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradingStopBase already has scope attached
+2020-03-17 23:19:52,953 bravado_core.model DEBUG    Already visited #/definitions/TradingStopBase
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,954 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalBase already has scope attached
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited #/definitions/ConditionalBase
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,954 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalBase already has scope attached
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited #/definitions/ConditionalBase
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,955 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalOrdersResBase already has scope attached
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited #/definitions/ConditionalOrdersResBase
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,956 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ReplaceConditionalBase already has scope attached
+2020-03-17 23:19:52,956 bravado_core.model DEBUG    Already visited #/definitions/ReplaceConditionalBase
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/FundRecordBase already has scope attached
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited #/definitions/FundRecordBase
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,957 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,958 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/SetRiskLimitBase already has scope attached
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited #/definitions/SetRiskLimitBase
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/RiskLimitBase already has scope attached
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited #/definitions/RiskLimitBase
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,958 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,959 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/WithdrawResBase already has scope attached
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited #/definitions/WithdrawResBase
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,959 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ServerTime already has scope attached
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited #/definitions/ServerTime
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,959 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/Position already has scope attached
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited #/definitions/Position
+2020-03-17 23:19:52,959 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,959 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/Leverage already has scope attached
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited #/definitions/Leverage
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,960 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ServerTime already has scope attached
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited #/definitions/ServerTime
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,960 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/TradeRecordsBase already has scope attached
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited #/definitions/TradeRecordsBase
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/QueryOrderBase already has scope attached
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited #/definitions/QueryOrderBase
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,961 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderCancelBase already has scope attached
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited #/definitions/OrderCancelBase
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,962 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderCancelAllBase already has scope attached
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited #/definitions/OrderCancelAllBase
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4508726192
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,962 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderResBase already has scope attached
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited #/definitions/OrderResBase
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,963 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/Position already has scope attached
+2020-03-17 23:19:52,963 bravado_core.model DEBUG    Already visited #/definitions/Position
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,964 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ConditionalCancelAllBase already has scope attached
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited #/definitions/ConditionalCancelAllBase
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,964 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/WithdrawBalance already has scope attached
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited #/definitions/WithdrawBalance
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,964 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,965 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/KlineBase already has scope attached
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited #/definitions/KlineBase
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited id 4507374192
+2020-03-17 23:19:52,965 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/OrderBookBase already has scope attached
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited #/definitions/OrderBookBase
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,965 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/Symbols already has scope attached
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited #/definitions/Symbols
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,965 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,966 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/SymbolInfoBase already has scope attached
+2020-03-17 23:19:52,966 bravado_core.model DEBUG    Already visited #/definitions/SymbolInfoBase
+2020-03-17 23:19:52,966 bravado_core.model DEBUG    Already visited id 4507374224
+2020-03-17 23:19:52,966 swagger_spec_validator.ref_validators DEBUG    Ref #/definitions/ServerTime already has scope attached
+2020-03-17 23:19:52,966 bravado_core.model DEBUG    Already visited #/definitions/ServerTime
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Common'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'APIkey'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Symbol'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Positions'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Wallet'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Order'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Conditional'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Funding'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Execution'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Market'
+2020-03-17 23:19:52,968 bravado_core.resource DEBUG    Building resource 'Kline'
+2020-03-17 23:19:52,969 bravado.client DEBUG    Positions_userLeverage({})
+2020-03-17 23:19:54,747 urllib3.connectionpool DEBUG    https://api-testnet.bybit.com:443 "GET /user/leverage?timestamp=1584451192000&api_key=j0yZj8P6Bald6GwVKA&sign=9880a165855b6689250853b679b992e87b5b45bc9fd62322a25773334cab58cb HTTP/1.1" 200 180
+2020-03-17 23:19:54,748 bravado.client DEBUG    Positions_myPositionV2({'symbol': 'BTCUSD'})
+2020-03-17 23:19:55,239 urllib3.connectionpool DEBUG    https://api-testnet.bybit.com:443 "GET /v2/private/position/list?symbol=BTCUSD&timestamp=1584451194000&api_key=j0yZj8P6Bald6GwVKA&sign=fd7ee96a408cf1a3282e95f053b2255daf75c906525a2f1dd6f46e72515aa52f HTTP/1.1" 200 900
+2020-03-17 23:19:55,239 bravado.client DEBUG    Wallet_getBalance({'coin': 'BTC'})
+2020-03-17 23:19:55,706 urllib3.connectionpool DEBUG    https://api-testnet.bybit.com:443 "GET /v2/private/wallet/balance?coin=BTC&timestamp=1584451194000&api_key=j0yZj8P6Bald6GwVKA&sign=f408f100d5d0b2d8b278ab46cbfbff0c9e65ce81275195d4565bad6958c4a85b HTTP/1.1" 200 455
+2020-03-17 23:19:55,707 bravado.client DEBUG    Market_symbolInfo({'symbol': 'BTCUSD'})
+2020-03-17 23:19:55,947 urllib3.connectionpool DEBUG    https://api-testnet.bybit.com:443 "GET /v2/public/tickers?symbol=BTCUSD&timestamp=1584451195000&api_key=j0yZj8P6Bald6GwVKA&sign=0fee7558daadbf466cc9907df7ca03ced137d8664d0bff5fddb1eaa62f1b8361 HTTP/1.1" 200 703
+2020-03-17 23:20:00,000 bravado.client DEBUG    Kline_get({'symbol': 'BTCUSD', 'interval': '15', 'from': 1584271200})
+2020-03-17 23:20:00,800 urllib3.connectionpool DEBUG    https://api-testnet.bybit.com:443 "GET /v2/public/kline/list?symbol=BTCUSD&interval=15&from=1584271200&timestamp=1584451199000&api_key=j0yZj8P6Bald6GwVKA&sign=4f748353f64e4bf7506780e17a2d7285ec4dbf5cc730a74d3ac893b27e0eb7f8 HTTP/1.1" 200 33502
+2020-03-17 23:20:01,587 apscheduler.executors.default INFO     Job "trade_job (trigger: cron[year='*', month='*', day='*', week='*', day_of_week='*', hour='*', minute='4,9,14,19,24,29,34,39,44,49,54,59', second='50'], next run at: 2020-03-17 13:24:50 UTC)" executed successfully

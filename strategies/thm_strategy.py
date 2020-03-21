@@ -23,21 +23,38 @@ USE_LOG_W = True
 RSI_MFI_PERIOD = 60
 RSI_MFI_MULT = 190
 
-class WTStrategy(BaseStrategy):
+BEAR_MARKET = 0
+BULL_MARKET = 1
+UNCERTAINTY = 2
+
+class THMStrategy(BaseStrategy):
     """ A Strategy manages generation of indicators on kline data and
         interpretting when actions should take place.
         Must call Strategy.load_klines before using Strategy.get_action
+
+        This particular strategy is a wave trend strategy that trades
+        on the 5 minute chart. It has 3 states, all with different execution 
+        logic. The state its in is dependent on the current value of the 
+        moneyflow of the 2 hour chart.
+
+        STATE = 0: Means 2H MFI <= -5
+        STATE = 1: Means 2H MFI >= 5
+        STATE = 2: Means -5 < 2H MFI < 5
     """
-    def __init__(self, wt_open_long=-65, wt_open_short=50, mfi_long=0, mfi_short=0, wt_exit_long=78, wt_exit_short=-88):
+
+    def __init__(self, state=UNCERTAINTY, wt_open_long=0, wt_close_long=0, mfi_open_long=0, wt_open_short=0, wt_close_short=0, mfi_open_short=0):
         super().__init__()
 
-        self.WT_OPEN_LONG_THRESHOLD = wt_open_long
-        self.WT_OPEN_SHORT_THRESHOLD = wt_open_short
-        self.MFI_LONG_THRESHOLD = mfi_long
-        self.MFI_SHORT_THRESHOLD = mfi_short
-        self.WT_EXIT_LONG_THRESHOLD = wt_exit_long
-        self.WT_EXIT_SHORT_THRESHOLD = wt_exit_short
-        
+        self.state = state
+
+        self.WT_OPEN_LONG = wt_open_long
+        self.WT_CLOSE_LONG = wt_close_long
+        self.MFI_OPEN_LONG = mfi_open_long
+
+        self.WT_OPEN_SHORT = wt_open_short
+        self.WT_CLOSE_SHORT = wt_close_short
+        self.MFI_OPEN_SHORT = mfi_open_short
+
     def load_klines(self, data):
         super().load_klines(data)
         self._add_indicators()
@@ -152,33 +169,28 @@ class WTStrategy(BaseStrategy):
     def _add_logic(self):
         super()._add_logic()
 
-        # print('adding logic')
         def __long():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['wt1'] < self.WT_OPEN_LONG_THRESHOLD and row['money_flow'] > self.MFI_LONG_THRESHOLD) # and row['wt_cross_up'] == 1)
-
+                result.iloc[index] = int(row['wt1'] < (self.WT_OPEN_LONG * row['log_mfi']) and row['money_flow'] > self.MFI_OPEN_LONG and self.state == BULL_MARKET)
             return result
         
         def __short():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['wt1'] > self.WT_OPEN_SHORT_THRESHOLD and row['money_flow'] < self.MFI_SHORT_THRESHOLD) # and row['wt_cross_down'] == 1)
-
+                result.iloc[index] = int(row['wt1'] > (self.WT_OPEN_SHORT * row['log_mfi']) and row['money_flow'] < self.MFI_OPEN_SHORT and self.state == BEAR_MARKET)
             return result
 
         def __exitlong():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['short'] == 1 or row['wt1'] > self.WT_EXIT_LONG_THRESHOLD)
-
+                result.iloc[index] = int(row['short'] == 1 or row['wt1'] > self.WT_CLOSE_LONG)
             return result
 
         def __exitshort():
             result = pd.Series(index=self.df.index)
             for index, row in self.df.iterrows():
-                result.iloc[index] = int(row['long'] == 1 or row['wt1'] < self.WT_EXIT_SHORT_THRESHOLD)
-
+                result.iloc[index] = int(row['long'] == 1 or row['wt1'] < self.WT_CLOSE_SHORT)
             return result
 
         self.df['long'] = __long()
@@ -210,3 +222,22 @@ class WTStrategy(BaseStrategy):
         ret_list.sort()
 
         return ret_list
+
+
+
+
+"""
+
+The strategy:
+
+logMoneyFlow = log10(10 + abs(moneyFlow)) //////// important
+
+longCondition = (wt1 < (-26.9 * logMoneyFlow) and moneyFlow > 31)
+shortCondition = (wt1 > (39.22 * logMoneyFlow) and moneyFlow < 14.65)
+
+exitLong = shortCondition or (wt1 > 79.21)
+exitShort = longCondition or (wt1 < 15.98) 
+
+
+
+"""
