@@ -3,10 +3,11 @@ import time
 
 import numpy as np
 
+from exchange.mock_exchange import MockExchange
+
 NO_POSITION = 0
 LONG_OPEN = 1
 SHORT_OPEN = 2
-
 
 class Backtester:
     def __init__(self, strategy, pyramiding=1, stake_percent=0.2, initial_capital=1, leverage=5, commission=0.00075):
@@ -172,71 +173,3 @@ class Backtester:
             self.pyramid_size = 0
             self.current_position = None
             self.total_equity += (original_margin + realised_pl) - fee
-            
-class MockExchange:
-    def __init__(self, initial_capital=1, leverage=5, commission=0.00075):
-        self.capital = initial_capital
-        self.leverage = leverage
-        self.commission = commission
-        self.position = None
-        self.trading_history = []
-
-    def open_position(self, long=True, margin=0.2, contracts=100, cur_price=0):
-        self.position = Position(long, margin, contracts, cur_price, self.leverage)
-
-    def increase_posn(self, margin, contracts, entry_price):
-        self.position.increase_posn(margin=margin, contracts=contracts, entry_price=entry_price)
-
-    def close_position(self, cur_price):
-        self.init_margin, self.realised_pl, self.fee = self.position.close(cur_price)
-        self.trading_history.append(self.position)
-        self.position = None
-        return self.init_margin, self.realised_pl, self.fee
-
-    def analyse_history(self):
-        # look at trading history and generate some metrics            
-        return self.trading_history
-
-class Position:
-    def __init__(self, long=True, margin=0.2, contracts=100, start_price=0.0, leverage=5):
-        self.long = long
-        self.contracts = contracts
-        self.average_entry_price = start_price
-        self.leverage = leverage
-        self.margin = margin
-        self.contract_value_in_currency = (self.contracts / start_price)
-
-    def increase_posn(self, margin=0.2, contracts=100, entry_price=0.0):
-        self.contracts += contracts
-        self.margin += margin
-        self.contract_value_in_currency += (contracts / entry_price)
-        self.average_entry_price = self.contracts / self.contract_value_in_currency
-
-    def close(self, end_price=1):
-        """ Return the realised P&L of this position, minus fees
-        """
-        self.end_price = end_price
-        self.closing_fee = (self.contracts / end_price) * (0.00075)
-
-        if self.long:
-            self.realised_pl = self.contracts * (1 / self.average_entry_price - 1 / self.end_price)
-            return self.margin, self.realised_pl, self.closing_fee
-        else: #!self.long
-            self.realised_pl = self.contracts * (1 / self.end_price - 1 / self.average_entry_price)
-            return self.margin, self.realised_pl, self.closing_fee
-
-    def get_unrealised_pl(self, cur_price):
-        if self.long:
-            return self.contracts * (1 / self.average_entry_price - 1 / cur_price)
-        else: #!self.long
-            return self.contracts * (1 / cur_price - 1 / self.average_entry_price)
-
-    # TODO: Work out if an order has been liquidated/hit its stop loss/hit its take profit
-
-    def __str__(self):
-        return f"posn:\n\tlong={self.long}\n\tsize={self.contracts}\n\tinit_margin={self.margin}\n\tavg_entry_price={self.average_entry_price}\n\tclose_price={self.end_price}\n\trealised_pl={self.realised_pl}\n\tfee={self.closing_fee}"
-
-
-if __name__ == "__main__":
-    pipeline = Pipeline(test=True, load_klines=True, validate=False)
-    pipeline.run_pipeline()

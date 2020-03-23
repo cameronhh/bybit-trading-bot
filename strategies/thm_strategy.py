@@ -42,18 +42,16 @@ class THMStrategy(BaseStrategy):
         STATE = 2: Means -5 < 2H MFI < 5
     """
 
-    def __init__(self, state=UNCERTAINTY, wt_open_long=0, wt_close_long=0, mfi_open_long=0, wt_open_short=0, wt_close_short=0, mfi_open_short=0):
+    def __init__(self):
         super().__init__()
 
-        self.state = state
-
-        self.WT_OPEN_LONG = wt_open_long
-        self.WT_CLOSE_LONG = wt_close_long
-        self.MFI_OPEN_LONG = mfi_open_long
-
-        self.WT_OPEN_SHORT = wt_open_short
-        self.WT_CLOSE_SHORT = wt_close_short
-        self.MFI_OPEN_SHORT = mfi_open_short
+        self.state = BEAR_MARKET
+        self.WT_OPEN_LONG = -26.9
+        self.WT_CLOSE_LONG = 79.21
+        self.MFI_OPEN_LONG = 31.0
+        self.WT_OPEN_SHORT = 39.22
+        self.WT_CLOSE_SHORT = 15.98
+        self.MFI_OPEN_SHORT = 14.65
 
     def load_klines(self, data):
         super().load_klines(data)
@@ -164,7 +162,7 @@ class THMStrategy(BaseStrategy):
         self.df['wt_cross_up'] = indicators.crossover(self.df['wt2'], self.df['wt1'])
         self.df['wt_cross_down'] = indicators.crossover(self.df['wt1'], self.df['wt2'])
 
-        self.df['log_mfi'] = np.log10(10 + abs(self.df['money_flow']))
+        self.df['log_mfi'] = indicators.log_mfi(self.df)
 
     def _add_logic(self):
         super()._add_logic()

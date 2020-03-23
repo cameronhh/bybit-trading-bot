@@ -70,3 +70,14 @@ def heiken_ashi(data):
         prev_bar_mid = 0.5 * (ha_close.iloc[index] + ha_open.iloc[index])
 
     return ha_open, ha_close, ha_high, ha_low
+
+def log_mfi(data):
+    result = pd.Series(index=data.index)
+    for index, row in data.iterrows():
+        
+        if row['money_flow'] > 0:
+            result.iloc[index] = np.log10(10 + abs(row['money_flow']))
+        else:
+            result.iloc[index] = 1
+    return result
+    

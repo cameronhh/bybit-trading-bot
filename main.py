@@ -4,7 +4,7 @@ import time
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from bot import TradingBot
-from pipeline import Pipeline
+from pipeline.wt_pipeline import WTPipeline
 
 logging.basicConfig( level=logging.DEBUG, # TODO: work out how to do logging properly
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
@@ -36,14 +36,10 @@ def trade_job():
         pass
     bot.worker()
 
-@sched.scheduled_job('cron', year='*', month='*', day='*', week='*', day_of_week='*', hour='0,2,4,6,8,10,12,14,16,18,20,22,', minute='0', second='0')
-def backtest_job():
-    logger.debug(f"running backtest job at time: {time.gmtime()}")
-    pipeline = Pipeline(test=True, load_klines=True, validate=False)
-    pipeline.run_pipeline()
-
-
-
-    
+# @sched.scheduled_job('cron', year='*', month='*', day='*', week='*', day_of_week='*', hour='0,2,4,6,8,10,12,14,16,18,20,22,', minute='0', second='0')
+# def backtest_job():
+#     logger.debug(f"running backtest job at time: {time.gmtime()}")
+#     pipeline = WTPipeline(test=True, load_klines=True, validate=False)
+#     pipeline.run_pipeline()
 
 sched.start()
