@@ -1,4 +1,5 @@
 import configparser
+import logging
 import time
 
 from enums.actions import Action
@@ -69,7 +70,7 @@ class TradingBot:
         self.logger.info('[BOT] running worker')
 
         # get data
-        kline_data = self.exchange.get_klines(symbol="BTCUSD", interval="15", limit=200)
+        kline_data = self.exchange.get_klines(symbol="BTCUSD", interval="5", limit=200)
 
         # load data
         self.strategy.load_klines(data=kline_data)
