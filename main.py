@@ -4,12 +4,10 @@ import time
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from bot import TradingBot
-from pipeline.wt_pipeline import WTPipeline
 
 logging.basicConfig( level=logging.DEBUG, # TODO: work out how to do logging properly
-                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-                    filename='logs/sandbox.log',
-                    filemode='w')
+                    format='%(asctime)s %(message)s',
+                    filename='logs/main.log')
 
 sched = BlockingScheduler({ # TODO separate this out into a config file
     'apscheduler.executors.default': {
@@ -25,12 +23,12 @@ sched = BlockingScheduler({ # TODO separate this out into a config file
     'apscheduler.timezone': 'UTC',
 })
 
-logger = logging.getLogger("sandbox")
+logger = logging.getLogger("main")
 
 TIME_PERIOD_SECS = 300
 @sched.scheduled_job('cron', year='*', month='*', day='*', week='*', day_of_week='*', hour='*', minute='4,9,14,19,24,29,34,39,44,49,54,59', second='50')
 def trade_job():
-    logger.debug(f"running trade job at time: {time.gmtime()}")
+    logger.debug(f"running trade job")
     bot = TradingBot(test=True)
     while int(time.time()) % TIME_PERIOD_SECS != 0:
         pass
