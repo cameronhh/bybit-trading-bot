@@ -205,19 +205,17 @@ class THMStrategy(BaseStrategy):
         last_row_index = len(self.df) - 2 # -2 because the last row will always be the currently incomplete candle
         ret_list = []
 
-        if self.df.loc[last_row_index]['long'] == 1:
-            ret_list.append(Action.OPEN_LONG)
-        if self.df.loc[last_row_index]['short'] == 1:
-            ret_list.append(Action.OPEN_SHORT)
         if self.df.loc[last_row_index]['exitlong'] == 1:
             ret_list.append(Action.CLOSE_LONG)
         if self.df.loc[last_row_index]['exitshort'] == 1:
             ret_list.append(Action.CLOSE_SHORT)
+        if self.df.loc[last_row_index]['long'] == 1:
+            ret_list.append(Action.OPEN_LONG)
+        if self.df.loc[last_row_index]['short'] == 1:
+            ret_list.append(Action.OPEN_SHORT)
         
         if (len(ret_list) == 0):
             ret_list.append(Action.NO_ACTION)
-
-        ret_list.sort()
 
         return ret_list
 
