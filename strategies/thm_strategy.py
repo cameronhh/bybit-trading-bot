@@ -46,12 +46,12 @@ class THMStrategy(BaseStrategy):
         super().__init__()
 
         self.state = BEAR_MARKET
-        self.WT_OPEN_LONG = -26.9
+        self.WT_OPEN_LONG = -28.9
         self.WT_CLOSE_LONG = 79.21
         self.MFI_OPEN_LONG = 31.0
-        self.WT_OPEN_SHORT = 39.22
-        self.WT_CLOSE_SHORT = 15.98
-        self.MFI_OPEN_SHORT = 14.65
+        self.WT_OPEN_SHORT = 40.22
+        self.WT_CLOSE_SHORT = 1.0
+        self.MFI_OPEN_SHORT = 24
 
     def load_klines(self, data):
         super().load_klines(data)
