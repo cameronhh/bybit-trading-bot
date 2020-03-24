@@ -44,13 +44,13 @@ class TradingBot:
             self.logger.info(f"[BOT] executing CLOSE_LONG")
             if self.position.get('side') == 'Buy': # in a long posn
                 open_qty = self.position.get('size')
-                self.exchange.place_order('Sell', 'BTCUSD', size)
+                self.exchange.place_order('Sell', 'BTCUSD', open_qty)
             # else: # not in a long posn
         elif action == Action.CLOSE_SHORT:
             self.logger.info(f"[BOT] executing CLOSE_SHORT")
             if self.position.get('side') == 'Sell': # in a short posn
                 open_qty = self.position.get('size')
-                self.exchange.place_order('Buy', 'BTCUSD', size)
+                self.exchange.place_order('Buy', 'BTCUSD', open_qty)
             # else: # not in a short posn
         elif action == Action.OPEN_LONG:
             self.logger.info(f"[BOT] executing OPEN_LONG")
@@ -77,6 +77,7 @@ class TradingBot:
 
         # get action
         actions = self.strategy.get_actions()
+        print(actions)
 
         for x in actions:
             self.execute_action(x)

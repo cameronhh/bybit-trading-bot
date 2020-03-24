@@ -49,7 +49,7 @@ class BybitExchange:
         response = self.client.Market.Market_symbolInfo(**kwargs).result()[0]
         if response.get('ret_msg') == 'OK':
             self.logger.info(f"[BYBIT CLIENT] get_market_price: returned {response.get('result')[0].get('mark_price')}")
-            return response.get('result')[0].get('mark_price')
+            return float(response.get('result')[0].get('mark_price'))
         else:
             self.logger.error("[BYBIT CLIENT] get_market_price: bad request")
 
