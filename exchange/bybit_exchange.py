@@ -5,8 +5,6 @@ import time
 
 import bybit
 
-# TODO: Error handling for these functions (basically just need to check ret_msg)
-
 class BybitExchange:
     def __init__(self, test=True):
 
@@ -18,7 +16,7 @@ class BybitExchange:
 
         self.test = test
         api_key, api_secret = self._get_keys()
-        self.client = bybit.bybit(test=True, api_key=api_key, api_secret=api_secret)
+        self.client = bybit.bybit(test=test, api_key=api_key, api_secret=api_secret)
     
     def _get_keys(self):
         with open('secret/bybit_keys.json', 'r') as f:
@@ -35,7 +33,16 @@ class BybitExchange:
             return response.get('result').get(coin).get('available_balance')
         else:
             self.logger.error("[BYBIT CLIENT] get_availlable_balance: bad request")
-        
+
+    def get_equity(self, coin):
+        kwargs = { "coin": coin }
+        response = self.client.Wallet.Wallet_getBalance(**kwargs).result()[0]
+        if response.get('ret_msg') == 'OK':
+            self.logger.info(f"[BYBIT CLIENT] get_equity: returned {response.get('result').get(coin).get('available_balance')}")
+            return response.get('result').get(coin).get('equity')
+        else:
+            self.logger.error("[BYBIT CLIENT] get_equity: bad request")
+
     def get_time(self):
         response = self.client.Common.Common_get().result()[0]
         if response.get('ret_msg') == 'OK':
@@ -120,7 +127,7 @@ class BybitExchange:
             kwargs = {"symbol": symbol, "interval": interval, "from": cur_time}
             result += self.client.Kline.Kline_get(**kwargs).result()[0].get('result')
             cur_time += 200 * _interval_secs
-            time.sleep(0.5)
+            time.sleep(0.1)
         return result
 
     def _get_klines_from_limit(self, symbol, interval, limit):
