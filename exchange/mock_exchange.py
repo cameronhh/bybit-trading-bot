@@ -20,16 +20,16 @@ class MockExchange:
         self.leverage = leverage
         self.commission = commission
         self.position = None
-        self.trading_history = []
+        self.trading_history = []        
 
-    def open_position(self, long=True, margin=0.2, contracts=100, cur_price=0):
+    def open_position(self, long=True, margin=0.2, contracts=100, cur_price=0, fee=0):
         side = "Buy" if long else "Sell"
         self.logger.info(f"[MOCK EXCHANGE] open_position: side: {side} - size: {contracts} - price: {cur_price}")
-        self.position = Position(long, margin, contracts, cur_price, self.leverage)
+        self.position = Position(long, margin, contracts, cur_price, self.leverage, fee=fee)
 
-    def increase_posn(self, margin, contracts, entry_price):
+    def increase_posn(self, margin, contracts, entry_price, fee=0):
         self.logger.info(f"[MOCK EXCHANGE] increase_posn: increased size: {contracts} - price: {entry_price}")
-        self.position.increase_posn(margin=margin, contracts=contracts, entry_price=entry_price)
+        self.position.increase_posn(margin=margin, contracts=contracts, entry_price=entry_price, fee=fee)
 
     def close_position(self, cur_price):
         self.logger.info(f"[MOCK EXCHANGE] close_position: close price: {cur_price}")
@@ -40,22 +40,24 @@ class MockExchange:
 
     def analyse_history(self):
         # look at trading history and generate some metrics            
-        return self.trading_history
+        return self.trading_history, self.position
 
 class Position:
-    def __init__(self, long=True, margin=0.2, contracts=100, start_price=0.0, leverage=5):
+    def __init__(self, long=True, margin=0.2, contracts=100, start_price=0.0, leverage=5, fee=0):
         self.long = long
         self.contracts = contracts
         self.average_entry_price = start_price
         self.leverage = leverage
         self.margin = margin
         self.contract_value_in_currency = (self.contracts / start_price)
+        self.opening_fees = fee
 
-    def increase_posn(self, margin=0.2, contracts=100, entry_price=0.0):
+    def increase_posn(self, margin=0.2, contracts=100, entry_price=0.0, fee=0):
         self.contracts += contracts
         self.margin += margin
         self.contract_value_in_currency += (contracts / entry_price)
         self.average_entry_price = self.contracts / self.contract_value_in_currency
+        self.opening_fees += fee
 
     def close(self, end_price=1):
         """ Return the realised P&L of this position, minus fees
@@ -66,7 +68,7 @@ class Position:
         if self.long:
             self.realised_pl = self.contracts * (1 / self.average_entry_price - 1 / self.end_price)
             return self.margin, self.realised_pl, self.closing_fee
-        else: #!self.long
+        else: # !self.long
             self.realised_pl = self.contracts * (1 / self.end_price - 1 / self.average_entry_price)
             return self.margin, self.realised_pl, self.closing_fee
 
@@ -79,4 +81,5 @@ class Position:
     # TODO: Work out if an order has been liquidated/hit its stop loss/hit its take profit
 
     def __str__(self):
-        return f"posn:\n\tlong={self.long}\n\tsize={self.contracts}\n\tinit_margin={self.margin}\n\tavg_entry_price={self.average_entry_price}\n\tclose_price={self.end_price}\n\trealised_pl={self.realised_pl}\n\tfee={self.closing_fee}"
+        side = 'Long' if self.long else 'Short'
+        return f"{side}\tmargin={self.margin:.2f}\topen={self.average_entry_price:.2f}\tclose={self.end_price:.2f}\trealised_pl={self.realised_pl:.4f}\tfee={self.closing_fee}"
