@@ -4,7 +4,6 @@ import time
 
 from enums.actions import Action
 from exchange.bybit_exchange import BybitExchange
-from strategies.wt_strategy import WTStrategy
 from strategies.thm_strategy import THMStrategy
 
 class TradingBot:
@@ -15,13 +14,14 @@ class TradingBot:
         self.logger.info("----------------")
         self.logger.info("Starting Trading Bot")
 
-        self.risk = 0.05 # 5% of available balance staked per trade
+        self.strategy = THMStrategy() # see BaseStrategy to see what defines a strategy
+
+        # can customise these variables
+        self.risk = 0.05
         self.leverage = 5
+
         self.exchange = BybitExchange(test=True)
-
-        self.strategy = THMStrategy()
-
-        self.exchange.set_leverage("BTCUSD",  "5")
+        self.exchange.set_leverage("BTCUSD",  str(self.leverage))
         self.update_info()
 
     def update_info(self):
@@ -30,12 +30,13 @@ class TradingBot:
         self.position = self.exchange.get_position("BTCUSD")
         self.has_position = not (self.position.get('side') == 'None')
         self.avail_bal = self.exchange.get_available_balance("BTC")
-        
+        self.equity = self.exchange.get_equity("BTC")
         # get last seen price
         self.last_mark_price = self.exchange.get_market_price("BTCUSD")
 
     def new_order_qty(self, coin):
-        return self.avail_bal * self.risk * self.leverage * self.last_mark_price
+        # return self.avail_bal * self.risk * self.leverage * self.last_mark_price # uncomment for dynamic position sizing
+        return self.equity * self.risk * self.leverage * self.last_mark_price
 
     def execute_action(self, action):
         if action == Action.NO_ACTION:
