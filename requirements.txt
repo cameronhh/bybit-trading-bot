@@ -1,0 +1,7 @@
+telegram
+apscheduler
+numpy
+pandas
+ta
+optuna
+bybit
