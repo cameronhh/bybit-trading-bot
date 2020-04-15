@@ -26,6 +26,7 @@ class Backtester:
         self.strategy = strategy
         self.initial_capital = initial_capital
         self.total_equity = initial_capital
+        self.total_fees = 0.0
         self.exchange_commission = commission
         self.leverage = leverage
         self.max_pyramid = pyramiding
@@ -35,8 +36,25 @@ class Backtester:
         self.state = NO_POSITION
         self.current_position = None
         self.pyramid_size = 0
+        self.last_seen_price = 0
 
-        self.run_backtest()
+        self.available_balance = initial_capital
+
+        self.fixed_posn_size = True
+    
+    def reset_exchange(self):
+        """ Resets the exchange component of the backtester. Leaving the strategy as is. """
+        self.exchange = MockExchange(initial_capital=self.initial_capital, leverage=self.leverage, commission=self.exchange_commission)
+        self.total_equity = self.initial_capital
+        self.total_fees = 0.0
+        self.n_trades = 0
+        self.total_realised_pl = 0
+        self.state = NO_POSITION
+        self.current_position = None
+        self.pyramid_size = 0
+        self.last_seen_price = 0
+
+        self.available_balance = self.initial_capital
 
     def get_total_realised_pl(self):
         return self.total_realised_pl
@@ -44,8 +62,9 @@ class Backtester:
     def _get_downside_deviation(self, trades):
         sum = 0
         for x in trades:
-            if x.realised_pl < 0:
-                sum += (x.realised_pl) * (x.realised_pl)
+            rpl = x.realised_pl - (x.opening_fees + x.closing_fee)
+            if rpl < 0:
+                sum += (rpl * rpl)
         
         dd = np.sqrt(sum/len(trades))
         if dd == 0.0:
@@ -54,39 +73,67 @@ class Backtester:
 
     def get_sharpe_ratio(self):
         rf = 0.001
-        trades = self.exchange.analyse_history()
+        trades, cur_pos = self.exchange.analyse_history()
         if len(trades) == 0:
             return -1
-        avg_return_percent = np.mean([(x.realised_pl/x.margin) for x in trades])
+        avg_return_percent = np.mean([((x.realised_pl - (x.opening_fees + x.closing_fee))/x.margin) for x in trades])
         dd = self._get_downside_deviation(trades)
         return min((avg_return_percent - rf) / dd, 1.5)
 
-    def print_report(self):
-        print(f"Backtesting report:")
+    def get_cross_score(self):
         n_profitable = 0
         sum_profitable = 0.0
         n_losers = 0
         sum_losers = 0.0
-        for x in self.exchange.analyse_history():
-            if x.realised_pl > 0:
+        trades, cur_pos = self.exchange.analyse_history()
+        for x in trades:
+            rpl = x.realised_pl - (x.closing_fee + x.opening_fees)
+            if rpl > 0:
                 n_profitable += 1
-                sum_profitable += x.realised_pl
+                sum_profitable += rpl
             else:
                 n_losers += 1
-                sum_losers += abs(x.realised_pl)
-            print(x)
-
+                sum_losers += abs(rpl)
         n_losers = max(n_losers, 1)
         sum_losers = max(sum_losers, 1)
         self.n_trades = max(self.n_trades, 1)
 
         perc_prof = n_profitable / self.n_trades
-        prof_factor = sum_profitable / sum_losers
+        prof_factor = (sum_profitable / sum_losers) if sum_losers != 0 else np.Inf
+        return perc_prof * prof_factor
+
+    def print_report(self, include_trades=False):
+        print(f"Backtesting report:")
+        n_profitable = 0
+        sum_profitable = 0.0
+        n_losers = 0
+        sum_losers = 0.0
+        trades, cur_pos = self.exchange.analyse_history()
+        for x in trades:
+            rpl = x.realised_pl - (x.closing_fee + x.opening_fees)
+            if rpl > 0:
+                n_profitable += 1
+                sum_profitable += rpl
+            else:
+                n_losers += 1
+                sum_losers += abs(rpl)
+            if include_trades: 
+                print(x)
+
+        n_losers = max(n_losers, 1)
+        self.n_trades = max(self.n_trades, 1)
+
+        perc_prof = n_profitable / self.n_trades
+        prof_factor = (sum_profitable / sum_losers) if sum_losers != 0 else np.Inf
+
+        unrealised_pl = cur_pos.get_unrealised_pl(self.last_seen_price) if cur_pos != None else 0.0
 
         print()
         print(f"    # trades: {self.n_trades}")
         print(f"    total realised pl: {self.total_realised_pl}")
-        print(f"    total equity: {self.total_equity}")
+        print(f"    total unrealised pl: {unrealised_pl}")
+        print(f"    total fees: {self.total_fees}")
+        print(f"    available bal: {self.available_balance}")
         print()
         print(f"    percetage profitable: {perc_prof}")
         print(f"    profit factor: {prof_factor}")
@@ -95,81 +142,113 @@ class Backtester:
         """ Given the amount of BTC you want to stake, returns the amount of contracts to buy
             at the current price, such that the given BTC amount (including fees) is used as margin
         """
-        initial_margin = self.stake_percent * self.total_equity
-        contract_qty = initial_margin * cur_price * self.leverage
+        contract_qty = size_btc * cur_price * self.leverage
         fee = (contract_qty / cur_price) * 0.00075
-        return initial_margin, contract_qty, fee
+        return contract_qty, fee
 
-    def run_backtest(self):
-        # print('running backtest')
-
-        self.state = NO_POSITION
-        last_close = 0    
-        for index, row in self.strategy.df.iterrows():
-            margin, order_size, fee = self._get_order_size(self.stake_percent * self.total_equity, row['close'])
-            if row['long'] == 1:
-                self._long(row['close'], margin, order_size, fee)
-                
-            elif row['short'] == 1:
-                self._short(row['close'], margin, order_size, fee)
-                
-            elif (row['exitshort'] == 1) or (row['exitlong'] == 1):
-                self._exit_position(row['close'])
-            last_close = row['close']
-        
-        if (self.exchange.position != None):
-            self._exit_position(last_close) # TODO unhardcode this
-
+    def run_backtest(self, start_index=None, stop_index=None):
+        """ Runs a backtest from the starting index to the stopping index.
+            If start_index is undefined, runs a backtest on the entire dataset loaded into 
+            the strategy. """
+        start_index = 0 if start_index == None else start_index
+        stop_index = len(self.strategy.df) if stop_index == None else stop_index
+        for index in range(start_index, stop_index):
+            self.last_seen_price = self.strategy.df.loc[index]['close']
+            stake_margin = self.initial_capital * self.stake_percent if self.fixed_posn_size else self.stake_percent * self.available_balance
+            order_size, fee = self._get_order_size(stake_margin, self.strategy.df.loc[index]['close'])
+            if self.strategy.df.loc[index]['long'] == 1:
+                self._long(self.strategy.df.loc[index]['close'], stake_margin, order_size, fee)
+                self.current_position = 'long'
+            elif self.strategy.df.loc[index]['short'] == 1:
+                self._short(self.strategy.df.loc[index]['close'], stake_margin, order_size, fee)
+                self.current_position = 'short'
+            elif (self.strategy.df.loc[index]['exitshort'] == 1 and self.current_position == 'short'):
+                self._exit_position(self.strategy.df.loc[index]['close'])
+                self.current_position = None
+            elif (self.strategy.df.loc[index]['exitlong'] == 1 and self.current_position == 'long'):
+                self._exit_position(self.strategy.df.loc[index]['close'])
+                self.current_position = None
+    
     def _long(self, cur_price, margin, contracts, fee):
         if self.state == NO_POSITION:
             # open new long position
-            self.exchange.open_position(long=True, margin=margin, contracts=contracts, cur_price=cur_price)
+            self.exchange.open_position(long=True, margin=margin, contracts=contracts, cur_price=cur_price, fee=fee)
             self.pyramid_size = 1
             self.state = LONG_OPEN
+            self.available_balance = self.available_balance - margin
+            self.available_balance = self.available_balance - fee
+            self.total_realised_pl -= fee
+            self.total_fees += fee
             self.total_equity -= (margin + fee)
         elif self.state == LONG_OPEN:
             # pyramid new long position if max pyramid isn't already reached
             if self.pyramid_size < self.max_pyramid:
-                self.exchange.increase_posn(margin=margin, contracts=contracts, entry_price=cur_price)
-                self.total_equity -= (margin + fee)
+                self.exchange.increase_posn(margin=margin, contracts=contracts, entry_price=cur_price, fee=fee)
                 self.pyramid_size += 1
+                self.available_balance = self.available_balance - margin
+                self.available_balance = self.available_balance - fee
+                self.total_realised_pl -= fee
+                self.total_fees += fee
+                self.total_equity -= (margin + fee)
             # else do nothing
         elif self.state == SHORT_OPEN:
             # close open long and open a short
             self._exit_position(cur_price)
-            self.exchange.open_position(long=True, margin=margin, contracts=contracts, cur_price=cur_price)
+            self.exchange.open_position(long=True, margin=margin, contracts=contracts, cur_price=cur_price, fee=fee)
             self.pyramid_size = 1
             self.state = LONG_OPEN
+            self.available_balance = self.available_balance - margin
+            self.available_balance = self.available_balance - fee
+            self.total_realised_pl -= fee
+            self.total_fees += fee
             self.total_equity -= (margin + fee)
 
     def _short(self, cur_price, margin, contracts, fee):
         if self.state == NO_POSITION:
-            # open new long position
-            self.exchange.open_position(long=False, margin=margin, contracts=contracts, cur_price=cur_price)
+            # open new short position
+            self.exchange.open_position(long=False, margin=margin, contracts=contracts, cur_price=cur_price, fee=fee)
             self.pyramid_size = 1
             self.state = SHORT_OPEN
+            self.available_balance = self.available_balance - margin
+            self.available_balance = self.available_balance - fee
+            self.total_realised_pl -= fee
+            self.total_fees += fee
             self.total_equity -= (margin + fee)
         elif self.state == SHORT_OPEN:
-            # pyramid new long position if max pyramid isn't already reached
+            # pyramid new short position if max pyramid isn't already reached
             if self.pyramid_size < self.max_pyramid:
-                self.exchange.increase_posn(margin=margin, contracts=contracts, entry_price=cur_price)
-                self.total_equity -= (margin + fee)
+                self.exchange.increase_posn(margin=margin, contracts=contracts, entry_price=cur_price, fee=fee)
                 self.pyramid_size += 1
+                self.available_balance = self.available_balance - margin
+                self.available_balance = self.available_balance - fee
+                self.total_realised_pl -= fee
+                self.total_fees += fee
+                self.total_equity -= (margin + fee)
             # else do nothing
         elif self.state == LONG_OPEN:
             # close open long and open a short
             self._exit_position(cur_price)
-            self.exchange.open_position(long=False, margin=margin, contracts=contracts, cur_price=cur_price)
+            self.exchange.open_position(long=False, margin=margin, contracts=contracts, cur_price=cur_price, fee=fee)
             self.pyramid_size = 1
             self.state = SHORT_OPEN
+            self.available_balance = self.available_balance - margin
+            self.available_balance = self.available_balance - fee
+            self.total_realised_pl -= fee
+            self.total_fees += fee
             self.total_equity -= (margin + fee)
 
     def _exit_position(self, cur_price):
         if self.state != NO_POSITION:
             original_margin, realised_pl, fee = self.exchange.close_position(cur_price)
-            self.total_realised_pl += realised_pl
-            self.n_trades += 1
             self.state = NO_POSITION
+            self.n_trades += 1
             self.pyramid_size = 0
             self.current_position = None
-            self.total_equity += (original_margin + realised_pl) - fee
+            self.available_balance = self.available_balance + original_margin
+            self.available_balance = self.available_balance + realised_pl
+            self.available_balance = self.available_balance - fee
+
+            self.total_realised_pl += realised_pl 
+            self.total_realised_pl -= fee
+            self.total_fees += fee
+            self.total_equity += original_margin + (realised_pl - fee)
