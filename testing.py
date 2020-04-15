@@ -2,44 +2,39 @@ import json
 import time
 
 from bot import TradingBot
-from pipelines.wt_pipeline import WTPipeline
-from telebot import TelegramBot
+from pipelines.thm_pipeline import THMPipeline
 
 from backtest import Backtester
 from exchange.bybit_exchange import BybitExchange
 from strategies.thm_strategy import THMStrategy
 
-# tele_config = configparser.ConfigParser
-# tele_config.read('secret/telegram_keys.ini')
+def test_pipeline(load_file='', optimise=False, train_test_split=0.5, num_candles=1000, interval="5"):
+    optimise = False
+    n_candles = num_candles
 
-# BOT_TOKEN = str(tele_config['DEFAULT']['BOT_TOKEN'])
-# USER_ID = int(tele_config['DEFAULT']['CHAT_ID'])
+    strat = THMStrategy()
 
-# if __name__ == '__main__':
-#     trading_bot = TradingBot(test=True)
-#     telebot = TelegramBot(token=BOT_TOKEN, allowed_user_id=USER_ID, trading_bot=trading_bot)
+    if load_file != '':
+        with open(load_file, 'r') as f:
+            data = json.load(f)
+    else:
+        exch = BybitExchange(test=False)
+        data = exch.get_klines(symbol="BTCUSD", interval=interval, limit=n_candles)
 
-# config =    {
-#                     'bot_token': '1119907117:AAE7yP-2n3JCY0yBJVh1UxubwjIaf4RbsGQ',
-#                     'chat_id': 951313615
-#                 }
+    print(f"Loaded data.")
 
-#     with open('secret/telegram_keys.json', 'w') as f:
-#         json.dump(config, f)
+    strat.load_klines(data)
+
+    print(f"Added indicators and signals.")
+
+    bt = Backtester(strategy=strat, pyramiding=15, stake_percent=0.05, leverage=5.0)
+
+    if optimise:
+        optimiser = THMPipeline(backtester=bt, num_candles=n_candles, train_test_split=train_test_split)
+        optimiser.run_pipeline()
+    else:
+        bt.run_backtest(start_index=0)
+        bt.print_report()
 
 if __name__ == '__main__':
-    ### Running a pipeline
-
-    # Get Data
-    exchange = BybitExchange(test=False) # False because we want kline data from the real exchange
-    data = exchange.get_klines(symbol="BTCUSD", interval="5", limit=2880)
-
-    thm_strategy = THMStrategy()
-    thm_strategy.load_klines(data=data)
-    backtester = Backtester(strategy=thm_strategy, pyramiding=15, stake_percent=0.05, initial_capital=1, leverage=5)
-    backtester.print_report()
-    
-    # pipeline = WTPipeline(test=False, data=data)
-    # pipeline.run_pipeline()
-
-
+    test_pipeline(num_candles=2880)
