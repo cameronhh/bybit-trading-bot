@@ -24,6 +24,10 @@ with open('secret/telegram_keys.json', 'r') as f:
 
 print(user_info)
 
+# # usage
+# if __name__ == '__main__':
+#     trading_bot = TradingBot(test=True)
+#     telebot = TelegramBot(token=user_info.bot_token, allowed_user_id=user_info.chat_id, trading_bot=trading_bot)
 class TelegramBot:
     def __init__(self, token: str, allowed_user_id, trading_bot: TradingBot):
         # self.updater = Updater(token=token, use_context=True)
