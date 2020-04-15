@@ -9,9 +9,11 @@ class BaseStrategy():
         interpretting when actions should take place.
         Must call Strategy.load_klines before using Strategy.get_action
 
-        Usage guide: 
-            Inherit from this class, define any parameters in the constructor.
-            Overwrite add_indicators to add custom signals/indicators to 
+        Usage: 
+            Inherit from this class. In order for a strategy to work 
+            with the TradingBot class self.df must have atleasts 4 columns:
+                'long', 'exitlong', 'short', 'exitshort',
+            of 1s and 0s.
     """
     def __init__(self):
         pass        
@@ -28,12 +30,15 @@ class BaseStrategy():
         self.df['volume'] = pd.to_numeric(self.df['volume'])
         self.df['turnover'] = pd.to_numeric(self.df['turnover'])
 
+        self._add_indicators()
+        self._add_signals()
+
     def _add_indicators(self):
         """ This method should only add new columns to self.df.
         """
         pass
 
-    def _add_logic(self):
+    def _add_signals(self):
         """ This method should add columns 'long', 'short', 'exitlong' and 'exitshort'
             to self.df.
         """
