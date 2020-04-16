@@ -25,3 +25,10 @@ See comments for more details.
 - Properly implement the pandas/numpy math in strategies to utilise vector operations
 - Telegram bot to send messages when the bot takes actions + some sort of intermittent summaries?
 - Write unit tests for the MockExchange and Backtester
+
+# Things I've Learnt
+- cron jobs
+- How to make a basic Telegram bot
+- How to optimise hyperparameters for a model
+- Different trading strategies, risk management strategies, technical analysis in general
+- Trading manually is more fun
