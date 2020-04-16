@@ -23,8 +23,10 @@ See comments for more details.
 # Todo
 - Run as a service instead of using APScheduler
 - Properly implement the pandas/numpy math in strategies to utilise vector operations
-- Telegram bot to send messages when the bot takes actions + some sort of intermittent summaries?
+- Telegram bot to send messages when the bot takes actions + some sort of intermittent summaries
 - Write unit tests for the MockExchange and Backtester
+- Add features for Limit orders, stop loss/take profit in TradintBot
+- Give the bot an on-tick callback, as opposed to only querying the server when a new candle is ready
 
 # Things I've Learnt
 - cron jobs
